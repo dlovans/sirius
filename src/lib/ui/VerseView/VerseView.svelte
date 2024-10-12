@@ -1,5 +1,5 @@
 <script>
-	import VerseNumberView from '$lib/ui/VerseView/NumberView.svelte';
+	import VerseNumberView from '$lib/ui/VerseView/VerseNumberView.svelte';
 	import TextVerseView from '$lib/ui/VerseView/TextView.svelte';
 
 	export let verseNumber;
