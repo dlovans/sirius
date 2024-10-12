@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	export let displayPlusSign = true;
+	export let displayPlusSign;
 	export let id;
 
 	let iconRef;
@@ -11,15 +11,15 @@
 	function handleClick() {
 		if (displayPlusSign) {
 			displayPlusSign = false;
-
 			dispatch('addToBookmarked', id)
 		} else {
 			displayPlusSign = true;
 			dispatch('removeFromBookmarked', id)
 		}
 	}
-</script>
 
-<button>
-	<img bind:this={iconRef} on:click={handleClick} src="" alt="Add verse.">
+	// TODO: if bookmarked, remove from Book view, else return it to Book view.
+</script>
+<button on:click={handleClick}>
+	<img bind:this={iconRef} src={displayPlusSign ? "displayplussign": "displayminussign"} alt="Add verse.">
 </button>

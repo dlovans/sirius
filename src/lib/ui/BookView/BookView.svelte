@@ -6,6 +6,6 @@
 
 <div class="flex flex-col w-full">
 	{#each verses as verse}
-		<VerseView verseNumber={verse.number} verseText={verse.text} id={verse.id} />
+		<VerseView verseNumber={verse.number} verseText={verse.text} id={verse.id} displayPlusSign={verse.displayPlusSign} />
 	{/each}
 </div>
