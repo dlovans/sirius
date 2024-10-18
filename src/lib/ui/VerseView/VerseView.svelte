@@ -8,8 +8,10 @@
 	export let verseText;
 	export let id;
 	export let isMutable = false;
+	export let displayView = true;
 </script>
 
+{#if displayView}
 <div class="flex flex-row flex-nowrap w-auto bg-sky-950">
 	<VerseNumberView verseNumber={verseNumber} verseChapter={verseChapter} />
 	<TextVerseView text={verseText} />
@@ -17,3 +19,4 @@
 		<VerseToggleView id={id} />
 	{/if}
 </div>
+{/if}
