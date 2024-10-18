@@ -1,6 +1,6 @@
 <script>
 	import VerseNumberView from '$lib/ui/VerseView/VerseDetailView.svelte';
-	import TextVerseView from '$lib/ui/VerseView/TextView.svelte';
+	import TextVerseView from '$lib/ui/VerseView/VerseTextView.svelte';
 	import VerseToggleView from '$lib/ui/VerseView/VerseToggleView.svelte';
 
 	export let verseChapter;

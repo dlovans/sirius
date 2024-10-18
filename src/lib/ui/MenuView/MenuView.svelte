@@ -1,6 +1,6 @@
 <script>
 	import BoardView from '$lib/ui/BoardView/BoardView.svelte';
-	import LinkView from '$lib/ui/LinkView/LinkView.svelte';
+	import LinkView from '$lib/ui/MenuView/LinkView.svelte';
 
 	export let boards;
 	export let adminAccess;
@@ -22,8 +22,10 @@
 			class="justify-center items-center w-full h-full px-2.5 py-1.5 bg-sky-950 hover:bg-cyan-950">New Board</button>
 	</div>
 	<div class="flex flex-col bg-sky-950 hover:bg-cyan-950">
-		{#each boards as board}
-			<BoardView boardName={board.name} />
-		{/each}
+		{#if Array.isArray(boards) && boards.length > 0 }
+			{#each boards as board}
+				<BoardView boardName={board.name} />
+			{/each}
+		{/if}
 	</div>
 </nav>
