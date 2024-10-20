@@ -7,7 +7,7 @@
 	export let verseNumber;
 	export let verseText;
 	export let id;
-	export let isMutable = false;
+	export let canDisable = false;
 	export let displayView = true;
 </script>
 
@@ -15,7 +15,7 @@
 <div class="flex flex-row flex-nowrap w-auto bg-sky-950">
 	<VerseNumberView verseNumber={verseNumber} verseChapter={verseChapter} />
 	<TextVerseView text={verseText} />
-	{#if isMutable}
+	{#if canDisable}
 		<VerseToggleView id={id} />
 	{/if}
 </div>

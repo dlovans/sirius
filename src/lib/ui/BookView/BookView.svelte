@@ -2,6 +2,7 @@
 	import VerseView from '$lib/ui/VerseView/VerseView.svelte'
 
 	export let verses;
+	console.log(verses)
 </script>
 
 <div class="flex flex-col w-full">
