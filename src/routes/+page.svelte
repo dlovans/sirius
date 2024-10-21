@@ -7,7 +7,7 @@
 	let lineOneRef;
 	let lineTwoRef;
 	let lineThreeRef;
-	let menuOpen = false;
+	let invisibleOverlayRef;
 
 	const isLoggedIn = get(user);
 	const isAdministrator = get(isAdmin);
@@ -24,12 +24,14 @@
 		lineThreeRef.classList.toggle('origin-top-left')
 		lineThreeRef.classList.toggle('bottom-[3px]')
 		menuRef.classList.toggle('translate-x-[0px]')
+		invisibleOverlayRef.classList.toggle('hidden')
 	}
 
 	// TODO: Remove sample board after populating db
 </script>
 
 <nav class="w-full h-[40px] px-1.5 py-1">
+	<span bind:this={invisibleOverlayRef} on:click={toggleMenu} on:keydown={toggleMenu} class="bg-transparent w-[100vw] h-[100svh] absolute top-0 left-0 hidden" tabindex="0" role="button"></span>
 	<div bind:this={hamburgerRef} on:click={toggleMenu} on:keydown={toggleMenu} class="relative w-[40px] h-[40px] overflow-hidden hover:cursor-pointer z-50" tabindex="0" role="button">
 		<span bind:this={lineOneRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm top-[5px] transition-all duration-300"></span>
 		<span bind:this={lineTwoRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm top-[20px] -translate-y-1/2 opacity-100 transition-all duration-300"></span>
@@ -59,3 +61,7 @@
 		</div>
 	</div>
 </nav>
+
+<main>
+
+</main>
