@@ -42,7 +42,7 @@
 			<a href="/login" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
 			<a href="/signup" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
 			{#if isLoggedIn}
-			<a href="/logout" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
+				<a href="/logout" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
 			{#if isAdministrator}
 				<a href="/admin" class="w-full h-10 flex items-center justify-center bg-sky-900 bg-opacity-50 rounded-md">Administrative</a>
