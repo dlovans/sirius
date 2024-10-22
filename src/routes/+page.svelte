@@ -1,6 +1,7 @@
 <script>
-	import { user, isAdmin } from '$lib/stores/auth.js';
+	import { isLoggedIn, isAdmin, userID } from '$lib/stores/auth.js';
 	import { get } from 'svelte/store';
+	import { goto } from '$app/navigation';
 
 	let hamburgerRef;
 	let menuRef;
@@ -9,7 +10,8 @@
 	let lineThreeRef;
 	let invisibleOverlayRef;
 
-	const isLoggedIn = get(user);
+	const isLoggedInSession = get(isLoggedIn);
+	const userIDSession = get(userID);
 	const isAdministrator = get(isAdmin);
 
 	export let boards = [];
@@ -27,6 +29,14 @@
 		invisibleOverlayRef.classList.toggle('hidden')
 	}
 
+	function userCredentials() {
+		if (!isLoggedIn) {
+			goto('/login')
+		} else {
+			// Display modal.
+		}
+	}
+
 	// TODO: Remove sample board after populating db
 </script>
 
@@ -41,7 +51,7 @@
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
 			<a href="/login" class="w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
 			<a href="/signup" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
-			{#if isLoggedIn}
+			{#if isLoggedInSession}
 				<a href="/logout" class="w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
 			{#if isAdministrator}
@@ -51,7 +61,7 @@
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-10 bg-gray-700">
 		<div class="flex flex-col justify-center items-center mt-4 gap-2">
 			<h4>BOARDS</h4>
-			<button class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
+			<button on:click={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
 			<a href="/123-board" class="w-full h-10 flex items-center justify-center bg-gray-700 rounded-md">Sample Board</a>
 			{#if boards.length > 0}
 				{#each boards as board}
