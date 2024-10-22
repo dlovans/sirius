@@ -1,4 +1,5 @@
 <script>
+	import BoardForm from '$lib/ui/BoardForm.svelte';
 	import { isLoggedIn, isAdmin, userID } from '$lib/stores/auth.js';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
@@ -10,6 +11,7 @@
 	let lineThreeRef;
 	let invisibleOverlayRef;
 
+	let displayModal = false;
 	const isLoggedInSession = get(isLoggedIn);
 	const userIDSession = get(userID);
 	const isAdministrator = get(isAdmin);
@@ -29,12 +31,16 @@
 		invisibleOverlayRef.classList.toggle('hidden')
 	}
 
-	function userCredentials() {
+	function checkUserCredentials() {
 		if (!isLoggedIn) {
 			goto('/login')
 		} else {
-			// Display modal.
+			displayModal = true;
 		}
+	}
+
+	function hideModal() {
+		displayModal = false;
 	}
 
 	// TODO: Remove sample board after populating db
@@ -70,6 +76,9 @@
 			{/if}
 		</div>
 	</div>
+	{#if displayModal}
+		<BoardForm displayModal={displayModal} hideModal={hideModal} />
+	{/if}
 </nav>
 
 <main>
