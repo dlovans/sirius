@@ -5,11 +5,13 @@
 	let inputRef;
 	let warningTextRef;
 
-	export let displayModal = false;
+	export let displayModal;
+	export let hideModal;
 
-	function hideModal() {
+
+	function cancelCreateBoard() {
 		inputRef.value = '';
-		displayModal = !displayModal;
+		hideModal();
 	}
 
 	async function validateInput(event) {
@@ -33,7 +35,7 @@
 
 				if (response.ok) {
 					const result = await response.json();
-					goto(`/${result.boardID}`)
+					await goto(`/${result.boardID}`)
 				}
 			} catch(e) {
 				console.log("Failed to create board.")
@@ -63,7 +65,7 @@
 	<p bind:this={warningTextRef} class="hidden">Enter a title!</p>
 	<div>
 		<button type="submit">Create</button>
-		<button on:click={hideModal}>Cancel</button>
+		<button on:click={cancelCreateBoard}>Cancel</button>
 	</div>
 </form>
-{/if}
+	{/if}
