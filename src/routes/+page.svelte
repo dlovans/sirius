@@ -39,10 +39,10 @@
 	</div>
 	<div bind:this={menuRef} class="text-xl absolute top-0 left-0 -translate-x-[300px] w-[250px] h-[100svh] transition-all duration-300 bg-[#0d1b2a] py-3 px-3 overflow-x-hidden">
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
-			<a href="/login" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
-			<a href="/signup" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
+			<a href="/login" class="w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
+			<a href="/signup" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
 			{#if isLoggedIn}
-				<a href="/logout" class="backdrop-blur-md w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
+				<a href="/logout" class="w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
 			{#if isAdministrator}
 				<a href="/admin" class="w-full h-10 flex items-center justify-center bg-sky-900 bg-opacity-50 rounded-md">Administrative</a>
