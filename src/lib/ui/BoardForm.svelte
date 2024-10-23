@@ -14,58 +14,46 @@
 		hideModal();
 	}
 
-	async function validateInput(event) {
+	async function submitForm(event) {
 		event.preventDefault();
 		if (!inputRef.value) {
-			warningTextRef.classList.toggle('hidden')
+			warningTextRef.classList.remove('opacity-0')
+			inputRef.classList.remove('border-gray-500')
+			inputRef.classList.add('border-orange-500')
+
+			setTimeout(() => {
+				warningTextRef.classList.add('opacity-0')
+			}, 2000)
 		} else {
-			const data = {
-				boardTitle: inputRef.value,
-				userID: userID
-			}
-
-			try {
-				const response = await fetch('/create-board', {
-					method: 'POST',
-					body: JSON.stringify(data),
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				})
-
-				if (response.ok) {
-					const result = await response.json();
-					await goto(`/${result.boardID}`)
-				}
-			} catch(e) {
-				console.log("Failed to create board.")
-			}
+			event.target.submit();
 		}
 	}
 
 	function confirmValidity() {
 		if (inputRef.value) {
-			if (!warningTextRef.classList.contains('hidden')) {
-				warningTextRef.classList.toggle('hidden');
+			if (!warningTextRef.classList.contains('opacity-0')) {
+				warningTextRef.classList.toggle('opacity-0');
 			}
 			inputRef.classList.remove('border-gray-500')
-			inputRef.classList.add('bg-emerald-300')
+			inputRef.classList.add('border-emerald-300')
 			inputRef.classList.remove('border-orange-500')
 		} else {
 			inputRef.classList.remove('border-gray-500')
-			inputRef.classList.remove('bg-emerald-300')
+			inputRef.classList.remove('border-emerald-300')
 			inputRef.classList.add('border-orange-500')
 		}
 	}
 </script>
 
 {#if displayModal}
-<form action="?/create-board" on:submit={validateInput} class="rounded-md border-2 border-gray-500 z-50 flex flex-col gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-	<input bind:this={inputRef} on:input={confirmValidity} type="text" name="title">
-	<p bind:this={warningTextRef} class="hidden">Enter a title!</p>
-	<div>
-		<button type="submit">Create</button>
-		<button on:click={cancelCreateBoard}>Cancel</button>
+<form action="?/create-board" method="POST" on:submit={submitForm} class="px-3 py-2 rounded-md border-0 bg-gray-800 z-50 flex flex-col justify-center items-center gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+	<h4>Create Board</h4>
+	<input bind:this={inputRef} on:input={confirmValidity} type="text" name="title" class="border-2 border-gray-500 rounded-md outline-0 px-1 py-1">
+	<input type="hidden" name="userID" value={userID} />
+	<p bind:this={warningTextRef} class="opacity-0 transition-opacity duration-300 bg-orange-400 px-3">Enter a title!</p>
+	<div class="flex justify-between w-full">
+		<button type="submit" class="bg-emerald-300 py-1 px-4">Create</button>
+		<button on:click={cancelCreateBoard} class="bg-red-600 py-1 px-4">Cancel</button>
 	</div>
 </form>
 	{/if}
