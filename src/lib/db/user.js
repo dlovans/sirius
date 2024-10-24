@@ -2,14 +2,14 @@ import { supabase } from '$lib/db/supabase.js';
 
 /**
  * Checks if user exists.
- * @param userID - User ID.
+ * @param userId - User ID.
  * @returns {object} - If database querying was successful.
  */
-export async function userExists(userID) {
+export async function findUser(userId) {
 	let { data: users, error } = await supabase
 		.from('users')
 		.select('id')
-		.eq('auth_user_id', userID)
+		.eq('auth_user_id', userId)
 		.limit(1)
 
 	if (error) {
