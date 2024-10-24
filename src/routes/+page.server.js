@@ -18,14 +18,22 @@ export const actions = {
 
 		const user = await userExists(userID);
 
-		if (!user) {
+		if (!user.success) {
+			throw error(500, 'Something went wrong! Could not create board.')
+		}
+
+		if (!user.userExists) {
 			throw error(401, 'Unauthorized user. Login or sign up to create a board.')
 		}
 
 		const result = await createBoard(userID, boardTitle)
 
-		if (!result) {
-			return fail(500, { message: "Something went wrong! Couldn't create a board." })
+		if (!result.success) {
+			throw error(500, 'Something went wrong! Could not create board.')
+		}
+
+		if (!result.boardID) {
+			return fail(503, { message: 'Successfully created board. Missing board data. Refresh page.'})
 		}
 
 		redirect(303,`/${result.boardID}`)
