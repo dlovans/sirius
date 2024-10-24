@@ -24,13 +24,10 @@ export const actions = {
 
 		const result = await createBoard(userID, boardTitle)
 
-		if (result) {
-			if (!result.boardID) {
-				throw error(400, "Couldn't retrieve board details.")
-			}
-			return redirect(303, `/${result.boardID}`)
-		} else {
-			throw error(500, 'Failed to create board. Please try again.')
+		if (!result) {
+			return fail(500, { message: "Something went wrong! Couldn't create a board." })
 		}
+
+		redirect(303,`/${result.boardID}`)
 	}
 }
