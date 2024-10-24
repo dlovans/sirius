@@ -1,20 +1,10 @@
 import { supabase } from '$lib/db/supabase.js';
-import { userExists } from '$lib/db/user.js';
 
-export async function createBoard(userID, boardTitle) {
-	const findUser = await userExists(userID);
-	if (!findUser.success) {
-		return {
-			success: false,
-			message: 'Failed to find user',
-			boardID: null,
-		}
-	}
-
+export async function createBoard(userId, boardTitle) {
 	let { data: boards, error } = await supabase
 		.from('boards')
 		.insert([
-			{ owner: findUser.userRowId, title: boardTitle }
+			{ owner: userId, title: boardTitle }
 		])
 		.select()
 
