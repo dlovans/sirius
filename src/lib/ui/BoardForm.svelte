@@ -16,6 +16,10 @@
 
 	async function submitForm(event) {
 		event.preventDefault();
+		if (!userID) {
+			goto('/login')
+			return
+		}
 		if (!inputRef.value) {
 			warningTextRef.classList.remove('opacity-0')
 			inputRef.classList.remove('border-gray-500')
@@ -46,7 +50,7 @@
 </script>
 
 {#if displayModal}
-<form action="?/create-board" method="POST" on:submit={submitForm} class="px-3 py-2 rounded-md border-0 bg-gray-800 z-50 flex flex-col justify-center items-center gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<form action="?/createBoardAction" method="POST" on:submit={submitForm} class="px-3 py-2 rounded-md border-0 bg-gray-800 z-50 flex flex-col justify-center items-center gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 	<h4>Create Board</h4>
 	<input bind:this={inputRef} on:input={confirmValidity} type="text" name="title" class="border-2 border-gray-500 rounded-md outline-0 px-1 py-1">
 	<p bind:this={warningTextRef} class="opacity-0 transition-opacity duration-300 bg-orange-400 px-3">Enter a title!</p>
