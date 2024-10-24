@@ -1,7 +1,6 @@
 <script>
 	import BoardForm from '$lib/ui/BoardForm.svelte';
 	import { isLoggedIn, isAdmin } from '$lib/stores/auth.js';
-	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 
 	let menuRef;
@@ -11,8 +10,7 @@
 	let invisibleOverlayRef;
 
 	let displayModal = false;
-	const isLoggedInSession = get(isLoggedIn);
-	const isAdministrator = get(isAdmin);
+
 
 	export let boards = [];
 
@@ -30,7 +28,7 @@
 	}
 
 	function checkUserCredentials() {
-		if (!isLoggedIn) {
+		if (!$isLoggedIn) {
 			goto('/login')
 		} else {
 			displayModal = true;
@@ -55,10 +53,10 @@
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
 			<a href="/login" class="w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
 			<a href="/signup" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
-			{#if isLoggedInSession}
+			{#if $isLoggedIn}
 				<a href="/logout" class="w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
-			{#if isAdministrator}
+			{#if $isAdmin}
 				<a href="/admin" class="w-full h-10 flex items-center justify-center bg-sky-900 bg-opacity-50 rounded-md">Administrative</a>
 			{/if}
 		</div>

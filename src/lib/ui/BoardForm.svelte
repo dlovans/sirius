@@ -16,8 +16,10 @@
 
 	async function submitForm(event) {
 		event.preventDefault();
-		if (!userID) {
+		console.log($userID)
+		if (!$userID) {
 			goto('/login')
+			console.log("here")
 			return
 		}
 		if (!inputRef.value) {
