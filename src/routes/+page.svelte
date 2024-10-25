@@ -3,16 +3,16 @@
 	import { isLoggedIn, isAdmin } from '$lib/stores/auth.js';
 	import { goto } from '$app/navigation';
 
-	let menuRef;
-	let lineOneRef;
-	let lineTwoRef;
-	let lineThreeRef;
-	let invisibleOverlayRef;
+	let menuRef = $state();
+	let lineOneRef = $state();
+	let lineTwoRef = $state();
+	let lineThreeRef = $state();
+	let invisibleOverlayRef = $state();
 
-	let displayModal = false;
+	let displayModal = $state(false);
 
 
-	export let boards = [];
+	let { boards = [] } = $props();
 
 	function toggleMenu() {
 		lineOneRef.classList.toggle('rotate-45')
@@ -45,8 +45,8 @@
 </script>
 
 <nav class="w-full h-[40px] px-1.5 py-1">
-	<span bind:this={invisibleOverlayRef} on:click={toggleMenu} on:keydown={toggleMenu} class="bg-transparent w-[100vw] h-[100svh] absolute top-0 left-0 hidden" tabindex="0" role="button"></span>
-	<div on:click={toggleMenu} on:keydown={toggleMenu} class="relative w-[40px] h-[40px] overflow-hidden hover:cursor-pointer z-30" tabindex="0" role="button">
+	<span bind:this={invisibleOverlayRef} onclick={toggleMenu} onkeydown={toggleMenu} class="bg-transparent w-[100vw] h-[100svh] absolute top-0 left-0 hidden" tabindex="0" role="button"></span>
+	<div onclick={toggleMenu} onkeydown={toggleMenu} class="relative w-[40px] h-[40px] overflow-hidden hover:cursor-pointer z-30" tabindex="0" role="button">
 		<span bind:this={lineOneRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm top-[5px] transition-all duration-300"></span>
 		<span bind:this={lineTwoRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm top-[20px] -translate-y-1/2 opacity-100 transition-all duration-300"></span>
 		<span bind:this={lineThreeRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm bottom-[5px] transition-all duration-300"></span>
@@ -65,7 +65,7 @@
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-10 bg-gray-700">
 		<div class="flex flex-col justify-center items-center mt-4 gap-2">
 			<h4>BOARDS</h4>
-			<button on:click={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
+			<button onclick={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
 			<a href="/123-board" class="w-full h-10 flex items-center justify-center bg-gray-700 rounded-md">Sample Board</a>
 			{#if boards.length > 0}
 				{#each boards as board}

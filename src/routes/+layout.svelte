@@ -4,7 +4,7 @@
 	import { isLoggedIn, isAdmin, userID } from '$lib/stores/auth.js';
 	import { onMount } from 'svelte';
 
-	export let data;
+	let { data, children } = $props();
 
 	onMount(() => {
 		isLoggedIn.set(data.isLoggedIn)
@@ -13,4 +13,4 @@
 	})
 </script>
 
-<slot />
+{@render children?.()}
