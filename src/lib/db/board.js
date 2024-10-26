@@ -23,3 +23,25 @@ export async function createBoard(userId, boardTitle) {
 		boardID: boards[0]['id']
 	}
 }
+
+export async function getBoards(userId) {
+	let { data: boards, error } = await supabase
+	.from('boards')
+		.select('*')
+		.eq('owner', userId)
+
+	if (error) {
+		console.error('Error fetching boards: ', error);
+		return {
+			success: false,
+			message: 'An error occurred while fetching boards.',
+			boards: []
+		}
+	}
+
+	return {
+		success: true,
+		message: 'Successfully retrieved boards',
+		boards: boards
+	}
+}
