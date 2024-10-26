@@ -28,7 +28,7 @@ export async function getBoards(userId) {
 	let { data: boards, error } = await supabase
 	.from('boards')
 		.select('*')
-		.eq('owner', userId)
+		.eq('owner', 1)
 
 	if (error) {
 		console.error('Error fetching boards: ', error);
