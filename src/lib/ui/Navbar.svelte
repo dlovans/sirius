@@ -68,7 +68,6 @@
 		<div class="flex flex-col justify-center items-center mt-4 gap-2">
 			<h4>BOARDS</h4>
 			<button onclick={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
-			<a href="/123-board" class="w-full h-10 flex items-center justify-center bg-gray-700 rounded-md">Sample Board</a>
 			{#if boards.length > 0}
 				{#each boards as board}
 					<a href="/{ board.id }" class="w-full h-10 flex items-center justify-center bg-gray-700 bg-opacity-5 rounded-md">{ board.title }</a>
