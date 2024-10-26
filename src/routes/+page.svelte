@@ -4,4 +4,4 @@
 	let { data = [] } = $props()
 </script>
 
-<Navbar boards={ data } />
+<Navbar boards={ data.boards } />
