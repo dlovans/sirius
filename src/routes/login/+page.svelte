@@ -1,16 +1,26 @@
 <script>
 	let emailInputRef;
+	let passwordInputRef;
 
 	const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
 
 	function validateEmail() {
 		if (emailInputRef.value && regex.test(emailInputRef.value)) {
-			console.log("its working")
 			emailInputRef.classList.remove('border-orange-500')
 			emailInputRef.classList.add('border-emerald-400')
 		} else {
 			emailInputRef.classList.remove('border-emerald-400')
 			emailInputRef.classList.add('border-orange-500')
+		}
+	}
+
+	function validatePassword() {
+		if (passwordInputRef.value && passwordInputRef.value.length >= 6) {
+			passwordInputRef.classList.remove('border-orange-500')
+			passwordInputRef.classList.add('border-emerald-400')
+		} else {
+			passwordInputRef.classList.remove('border-emerald-400')
+			passwordInputRef.classList.add('border-orange-500')
 		}
 	}
 </script>
@@ -25,7 +35,7 @@
 		</div>
 		<div class="flex flex-col w-full">
 			<label for="password" class="text-zinc-100 text-2xl">Password</label>
-			<input type="password" name="password" id="password" class="w-full h-9 rounded-md border-2 transition-all duration-200 px-2 outline-0 text-zinc-900"/>
+			<input oninput={validatePassword} onchange={validatePassword} bind:this={passwordInputRef} type="password" name="password" id="password" class="w-full h-9 rounded-md border-2 transition-all duration-200 px-2 outline-0 text-zinc-900"/>
 		</div>
 		<a href="/reset-password" class="ml-auto text-emerald-100">Forgot password?</a>
 		<button type="submit" class="w-full h-10 bg-emerald-400 rounded-md text-zinc-900 text-xl">Login</button>
