@@ -1,9 +1,12 @@
 <script>
+	import { page } from '$app/stores';
+
 	let emailInputRef = $state()
 	let passwordInputRef = $state()
 	let warningRef = $state()
-	let emailValid = false
-	let passwordValid = false
+	let emailValid = $state(false)
+	let passwordValid = $state(false)
+	let message = $state($page.url.searchParams.get('message') || '')
 	let timeoutID
 
 	const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
@@ -72,9 +75,9 @@
 	}
 </script>
 
-<a href="/" class="font-bold text-xl text-emerald-400 absolute top-2 left-2">SIRIUS</a>
-<div class="relative -translate-y-12 flex flex-col justify-center items-center gap-5 h-[100svh] w-[100vw]">
-	<p bind:this={warningRef} class="relative -translate-x-[150%] flex items-center justify-center rounded-xl w-11/12 max-w-[400px] opacity-0 transition-all duration-300 bg-red-500 text-xl py-2 px-3"></p>
+<a href="/" class="font-bold text-xl text-emerald-400 absolute top-4 left-2 z-50">SIRIUS</a>
+<div class="relative -translate-y-14 flex flex-col justify-center items-center gap-2 h-[100svh] w-[100vw]">
+	<p bind:this={warningRef} class="relative -translate-x-[150%] h-10 flex items-center justify-center rounded-xl w-11/12 max-w-[400px] opacity-0 transition-all duration-300 bg-red-500 text-l py-2 px-3">Nothing</p>
 	<form action="/?signin" method="POST" onsubmit={submitForm} class="max-w-[400px] w-11/12 flex flex-col items-center gap-4 py-3 px-3 bg-neutral-900 rounded-xl">
 		<h2 class="text-3xl text-zinc-100">Login</h2>
 		<div class="flex flex-col w-full">
@@ -88,5 +91,8 @@
 		<a href="/reset-password" class="ml-auto text-emerald-100">Forgot password?</a>
 		<button type="submit" class="w-full h-10 bg-emerald-400 rounded-md text-zinc-900 text-xl">Login</button>
 		<p class="text-zinc-100">Don't have an account? <a href="/signup" class="text-emerald-400">Join now!</a></p>
+		{#if message === 'board_signin_required'}
+			<p class="absolute bottom-0 h-5 text-center bg-amber-200 text-zinc-900 flex justify-center items-center py-5 max-w-[400px] w-11/12 rounded-lg">Login to create a board!</p>
+		{/if}
 	</form>
 </div>
