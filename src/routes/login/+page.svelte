@@ -1,10 +1,10 @@
 <script>
-	let emailInputRef;
-	let passwordInputRef;
-	let warningRef;
-	let emailValid = false;
-	let passwordValid = false;
-	let timeoutID;
+	let emailInputRef = $state()
+	let passwordInputRef = $state()
+	let warningRef = $state()
+	let emailValid = false
+	let passwordValid = false
+	let timeoutID
 
 	const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
 
