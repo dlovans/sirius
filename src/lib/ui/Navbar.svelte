@@ -55,8 +55,10 @@
 <nav bind:this={menuRef} class="w-[250px] h-[40px] fixed top-0 right-0 translate-x-full xl:left-0 xl:translate-x-0 transition-all duration-300">
 	<div class="text-xl w-full h-[100svh] bg-[#0d1b2a] py-3 px-3 overflow-x-hidden">
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
+			{#if !$userID}
 			<a href="/login" class="w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
 			<a href="/signup" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
+			{/if}
 			{#if $userID}
 				<a href="/logout" class="w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
@@ -64,8 +66,10 @@
 				<a href="/admin" class="w-full h-10 flex items-center justify-center bg-sky-900 bg-opacity-50 rounded-md">Administrative</a>
 			{/if}
 		</div>
-		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-10 bg-gray-700">
-		<div class="flex flex-col justify-center items-center mt-4 gap-2">
+		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
+		<a href="/quran" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Qur'an</a>
+		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
+		<div class="flex flex-col justify-center items-center gap-2">
 			<h4>BOARDS</h4>
 			<button onclick={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
 			{#if boards.length > 0}
