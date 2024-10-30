@@ -30,7 +30,7 @@
 	function checkUserCredentials() {
 		displayModal = true
 		if (!$userID) {
-			goto('/login')
+			goto('/login?message=board_signin_required')
 		} else {
 			displayModal = true;
 		}
