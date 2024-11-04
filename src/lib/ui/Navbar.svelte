@@ -1,5 +1,5 @@
 <script>
-	import BoardForm from '$lib/ui/BoardForm.svelte';
+	import TopicForm from '$lib/ui/TopicForm.svelte';
 	import { userID, isAdmin } from '$lib/stores/auth.js';
 	import { goto } from '$app/navigation';
 
@@ -12,7 +12,7 @@
 	let displayModal = $state(false);
 
 
-	let { boards = [] } = $props();
+	let { boards: topics = [] } = $props();
 
 	function toggleMenu() {
 		lineOneRef.classList.toggle('rotate-45')
@@ -30,7 +30,7 @@
 	function checkUserCredentials() {
 		displayModal = true
 		if (!$userID) {
-			goto('/login?message=board_signin_required')
+			goto('/login?message=topic_signin_required')
 		} else {
 			displayModal = true;
 		}
@@ -40,7 +40,7 @@
 		displayModal = false;
 	}
 
-	// TODO: Remove sample board after populating db
+	// TODO: Remove sample topic after populating db
 </script>
 
 <div class="px-2 py-2 fixed flex items-center w-full z-50">
@@ -70,11 +70,11 @@
 		<a href="/quran" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Qur'an</a>
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
 		<div class="flex flex-col justify-center items-center gap-2">
-			<h4>BOARDS</h4>
-			<button onclick={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Board</button>
-			{#if boards.length > 0}
-				{#each boards as board}
-					<a href="/{ board.id }" class="w-full h-10 flex items-center justify-center bg-gray-700 bg-opacity-5 rounded-md">{ board.title }</a>
+			<h4>TOPICS</h4>
+			<button onclick={checkUserCredentials} class="rounded-md w-full h-10 bg-orange-500">+ Create Topic</button>
+			{#if topics.length > 0}
+				{#each topics as topic}
+					<a href="/{ topic.id }" class="w-full h-10 flex items-center justify-center bg-gray-700 bg-opacity-5 rounded-md">{ topic.title }</a>
 				{/each}
 			{/if}
 		</div>
