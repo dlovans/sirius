@@ -1,5 +1,5 @@
 import { redirect, fail, error } from '@sveltejs/kit';
-import { createBoard } from '$lib/db/topic.js'
+import { createTopic } from '$lib/db/topic.js'
 import { findUser } from '$lib/db/user.js'
 
 export const actions = {
