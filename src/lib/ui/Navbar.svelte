@@ -67,7 +67,7 @@
 			{/if}
 		</div>
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
-		<a href="/quran" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Qur'an</a>
+		<a href="/" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Qur'an</a>
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
 		<div class="flex flex-col justify-center items-center gap-2">
 			<h4>TOPICS</h4>
