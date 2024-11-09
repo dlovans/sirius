@@ -51,8 +51,8 @@
 		<span bind:this={lineThreeRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm bottom-[5px] transition-all duration-300"></span>
 	</div>
 </div>
-<span bind:this={invisibleOverlayRef} onclick={toggleMenu} onkeydown={toggleMenu} class="bg-transparent w-[100vw] h-[100svh] fixed top-0 left-0 hidden" tabindex="0" role="button"></span>
-<nav bind:this={menuRef} class="w-[250px] h-[40px] fixed top-0 right-0 translate-x-full xl:left-0 xl:translate-x-0 transition-all duration-300">
+<span bind:this={invisibleOverlayRef} onclick={toggleMenu} onkeydown={toggleMenu} class="bg-transparent w-[100vw] h-[100svh] fixed top-0 left-0 hidden z-20" tabindex="0" role="button"></span>
+<nav bind:this={menuRef} class="w-[250px] h-[40px] fixed top-0 right-0 translate-x-full xl:left-0 xl:translate-x-0 transition-all duration-300 z-20">
 	<div class="text-xl w-full h-[100svh] bg-[#0d1b2a] py-3 px-3 overflow-x-hidden">
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
 			{#if !$userID}
