@@ -80,6 +80,6 @@
 		</div>
 	</div>
 	{#if displayModal}
-		<BoardForm displayModal={displayModal} hideModal={hideModal} />
+		<TopicForm displayModal={displayModal} hideModal={hideModal} />
 	{/if}
 </nav>
