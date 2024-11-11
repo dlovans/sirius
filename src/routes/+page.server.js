@@ -1,6 +1,11 @@
 import { redirect, fail, error } from '@sveltejs/kit';
 import { createTopic } from '$lib/db/topic.js'
 import { findUser } from '$lib/db/user.js'
+import { getVersesByLangCode } from '$lib/db/verse.js';
+
+export async function load({ cookies }) {
+		 return await getVersesByLangCode(cookies.get('langCode') || 'en');
+}
 
 export const actions = {
 	createTopicAction: async ({ cookies, request }) => {
