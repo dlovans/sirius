@@ -19,7 +19,7 @@
 	})
 </script>
 
-<div class="p-2 flex flex-col gap-4 w-full overflow-hidden">
+<div class="p-1 xl:px-7 flex flex-col gap-4 w-full overflow-hidden">
 	<div class="flex flex-row gap-2 items-center bg-emerald-400 px-3 py-1 rounded-lg justify-between overflow-hidden">
 		<form method="POST" action="?/updateLang" bind:this={formRef} class="rounded-lg text-zinc-900 p-2 outline-0 flex flex-row justify-between w-full">
 			<label for="language" class="text-zinc-900 text-lg">Select Language:</label>
