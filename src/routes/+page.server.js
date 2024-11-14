@@ -5,7 +5,7 @@ import { getVersesByLangCode } from '$lib/db/verse.js';
 
 export async function load({ request, cookies }) {
 	let langCode = cookies.get('langCode')
-	if (langCode === 'undefined') {
+	if (langCode === 'undefined' || langCode === undefined) {
 		langCode = 'en';
 	}
 
