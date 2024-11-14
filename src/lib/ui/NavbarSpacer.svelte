@@ -1,0 +1,1 @@
+<div class="hidden w-[300px] h-full xl:flex"></div>
