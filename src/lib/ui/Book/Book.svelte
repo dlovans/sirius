@@ -18,9 +18,9 @@
 
 	<div class="flex flex-col gap-3">
 		{#each verses.data as verse}
-			<div class="flex relative w-full p-3 bg-stone-900 gap-2 rounded-lg overflow-hidden">
+			<div class="flex items-center relative w-full p-3 bg-stone-900 gap-2 rounded-lg overflow-hidden">
 				<h5 class="text-2xl bg-sky-900 flex h-min py-0.5 px-1 rounded-lg">{verse?.chapterNo}:{verse.verseNo}</h5>
-				<p class="text-lg">{verse.content}</p>
+				<p class="text-lg flex items-center">{verse.content}</p>
 			</div>
 		{/each}
 	</div>
