@@ -3,8 +3,18 @@ import { createTopic } from '$lib/db/topic.js'
 import { findUser } from '$lib/db/user.js'
 import { getVersesByLangCode } from '$lib/db/verse.js';
 
-export async function load({ cookies }) {
-		 return await getVersesByLangCode(cookies.get('langCode') || 'en');
+export async function load({ request, cookies }) {
+	let langCode = cookies.get('langCode')
+	if (langCode === 'undefined') {
+		langCode = 'en';
+	}
+
+	const verses = await getVersesByLangCode(langCode)
+
+	return {
+			verses: verses,
+			langCode
+	}
 }
 
 export const actions = {
@@ -39,5 +49,10 @@ export const actions = {
 		}
 
 		redirect(303,`/${result.topicID}`)
+	},
+	updateLang: async ({ cookies, request }) => {
+		const data = await request.formData();
+		const langCode = data.get('langCode');
+		cookies.set('langCode', langCode, { path: '/'});
 	}
 }
