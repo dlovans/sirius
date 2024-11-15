@@ -1,4 +1,6 @@
+import { db } from '$lib/db/firebase.js'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 /**
  * Checks if user exists.
@@ -6,6 +8,27 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
  * @returns {object} - If database querying was successful.
  */
 export async function findUser(userId) {
+	try {
+		const docRef = doc(db, 'users', userId)
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			return {
+				status: 200,
+				message: "User exists",
+				isAdmin: docSnap.data().isAdmin
+			}
+		} else {
+			return {
+				status: 422,
+				message: "User does not exist"
+			}
+		}
+	} catch (error) {
+		return {
+			status: 500,
+			message: "Something went wrong!"
+		}
+	}
 
 }
 
@@ -19,12 +42,12 @@ export async function signInUser(email, password){
 	const auth = getAuth();
 	try {
 		const userCredentials = await signInWithEmailAndPassword(auth, email, password)
+		const userDoc = await findUser(userCredentials.user.uid)
 
-		// TODO: Call findUser to get if user is admin.
 		return {
 			status: 200,
 			userID: userCredentials.user.uid,
-			isAdmin: true
+			isAdmin: userDoc.isAdmin
 		}
 	} catch(error) {
 		return {
