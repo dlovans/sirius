@@ -50,7 +50,7 @@
 </script>
 
 {#if displayModal}
-<form action="?/createTopicAction" method="POST" onsubmit={submitForm} class="px-5 py-3 rounded-md border-0 bg-gray-800 z-50 flex flex-col justify-center items-center gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<form action="?/createTopic" method="POST" onsubmit={submitForm} class="px-5 py-3 rounded-md border-0 bg-gray-800 z-50 flex flex-col justify-center items-center gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 	<h4 class="text-xl font-bold">Topic Title</h4>
 	<input bind:this={inputRef} oninput={confirmValidity} type="text" name="title" class="border-2 border-gray-500 rounded-lg outline-0 px-1 py-1 text-zinc-900">
 	<p bind:this={warningTextRef} class="opacity-0 transition-opacity duration-500 bg-orange-400 px-3 rounded-md w-full text-center text-zinc-900">Enter a title!</p>
