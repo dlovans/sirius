@@ -1,7 +1,9 @@
 <script>
 	import TopicForm from '$lib/ui/TopicForm.svelte';
-	import { userID, isAdmin } from '$lib/stores/auth.js';
 	import { goto } from '$app/navigation';
+
+	let { userID, isAdmin, topics = [] } = $props();
+
 
 	let menuRef = $state();
 	let lineOneRef = $state();
@@ -11,8 +13,6 @@
 
 	let displayModal = $state(false);
 
-
-	let { boards: topics = [] } = $props();
 
 	function toggleMenu() {
 		lineOneRef.classList.toggle('rotate-45')
@@ -29,7 +29,7 @@
 
 	function checkUserCredentials() {
 		displayModal = true
-		if (!$userID) {
+		if (!userID) {
 			goto('/login?message=topic_signin_required')
 		} else {
 			displayModal = true;
@@ -55,14 +55,14 @@
 <nav bind:this={menuRef} class="w-[250px] h-[40px] fixed top-0 right-0 translate-x-full xl:left-0 xl:translate-x-0 transition-all duration-300 z-20">
 	<div class="text-xl w-full h-[100svh] bg-stone-900 py-3 px-3 overflow-x-hidden">
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
-			{#if !$userID}
+			{#if !userID}
 			<a href="/login" class="w-full h-10 flex items-center justify-center bg-blue-500 rounded-md">Log In</a>
 			<a href="/signup" class="w-full h-10 flex items-center justify-center bg-emerald-500 rounded-md">Sign Up</a>
 			{/if}
-			{#if $userID}
+			{#if userID}
 				<a href="/logout" class="w-full h-10 flex items-center justify-center bg-amber-800 rounded-md">Log Out</a>
 			{/if}
-			{#if $isAdmin}
+			{#if isAdmin}
 				<a href="/admin" class="w-full h-10 flex items-center justify-center bg-sky-900 bg-opacity-50 rounded-md">Administrative</a>
 			{/if}
 		</div>
