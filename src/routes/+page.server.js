@@ -18,7 +18,7 @@ export async function load({ request, cookies }) {
 }
 
 export const actions = {
-	createTopicAction: async ({ cookies, request }) => {
+	createTopic: async ({ cookies, request }) => {
 		const data = await request.formData();
 		const topicTitle = data.get('title');
 		const userID = cookies.get('userID');
@@ -27,25 +27,23 @@ export const actions = {
 			return fail(400, {message: 'Topic title is required!'})
 		}
 		if (!userID) {
+			console.log(userID)
 			throw error(401, 'Unauthorized! Login or sign up to create a topic.')
 		}
 
 		const user = await findUser(userID);
 
-		if (!user.userRowId) {
-			throw error(401, user.message)
+		if (user.status === 422) {
+			throw error(401, "Unauthorized! Login or sign up to create a topic.")
 		}
-		if (!user.success) {
-			throw error(500, user.message)
+		if (user.status !== 200) {
+			throw error(500, "Something went wrong!")
 		}
 
-		const result = await createTopic(user.id, topicTitle)
+		const result = await createTopic(userID, topicTitle)
 
-		if (!result.success) {
+		if (result.status !== 200) {
 			throw error(500, result.message)
-		}
-		if (!result.topicID) {
-			return fail(503, { message: 'Successfully created topic. Missing topic data. Refresh page.'})
 		}
 
 		redirect(303,`/${result.topicID}`)
