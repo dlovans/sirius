@@ -79,7 +79,7 @@
 			{/if}
 		</div>
 	</div>
-	{#if displayModal}
-		<TopicForm displayModal={displayModal} hideModal={hideModal} />
-	{/if}
 </nav>
+{#if displayModal}
+	<TopicForm displayModal={displayModal} hideModal={hideModal} userID={userID} />
+{/if}
