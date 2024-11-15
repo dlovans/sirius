@@ -6,7 +6,7 @@
 	let { data = [] } = $props()
 </script>
 
-<Navbar boards={ data.boards } />
+<Navbar userID={data.userID} isAdmin={data.isAdmin} topics={data.topics} />
 <div class="relative h-full w-auto top-16 z-0 flex flex-row mx-5">
 	<NavbarSpacer />
 	<Book verses={data} />
