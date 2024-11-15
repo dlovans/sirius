@@ -1,11 +1,10 @@
 <script>
-	import { userID } from '$lib/stores/auth.js';
 	import { goto } from '$app/navigation';
 
 	let inputRef = $state();
 	let warningTextRef = $state();
 
-	let { displayModal, hideModal } = $props();
+	let { displayModal, hideModal, userID } = $props();
 
 
 	function cancelCreateTopic() {
@@ -15,7 +14,7 @@
 
 	async function submitForm(event) {
 		event.preventDefault();
-		if (!$userID) {
+		if (!userID) {
 			goto('/login')
 			return
 		}
