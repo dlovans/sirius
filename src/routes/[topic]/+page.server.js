@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { getTopic } from '$lib/db/topic.js';
 
 export async function load({ params, cookies }) {
 	const userID = cookies.get('userID')
@@ -6,7 +7,7 @@ export async function load({ params, cookies }) {
 	if (!userID) {
 		throw error(401, 'Unauthorized.')
 	}
-	const userTopic = await getUserTopic(userID, topicID)
+	const userTopic = await getTopic(userID, topicID)
 
 	if (userTopic.status !== 200) {
 		throw error(userTopic.status, userTopic.message)
