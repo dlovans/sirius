@@ -1,3 +1,6 @@
+import { error } from '@sveltejs/kit';
+import { getUserTopics } from '$lib/db/topic.js';
+
 export async function load({ cookies }) {
 	const userID = cookies.get('userID') || null
 	const isAdmin = cookies.get('isAdmin') || false
