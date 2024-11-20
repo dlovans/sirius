@@ -86,6 +86,6 @@
 			<input oninput={validatePassword} onchange={validatePassword} bind:this={passwordInputRef} formnovalidate type="password" name="password" id="password" class="w-full h-9 rounded-md border-2 transition-all duration-200 px-2 outline-0 text-zinc-900"/>
 		</div>
 		<button type="submit" class="w-full h-10 bg-emerald-400 rounded-md text-zinc-900 text-xl">Sign Up</button>
-		<p class="text-zinc-100">Already a member? <a href="/signup" class="text-emerald-400">Login!</a></p>
+		<p class="text-zinc-100">Already a member? <a href="/login" class="text-emerald-400">Login!</a></p>
 	</form>
 </div>
