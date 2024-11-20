@@ -1,5 +1,5 @@
 import { findUser } from '$lib/db/user.js';
-import { collection, addDoc, doc, serverTimestamp, getDocs, query, where } from 'firebase/firestore'
+import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc } from 'firebase/firestore';
 import { db } from '$lib/db/firebase.js';
 
 
@@ -40,8 +40,37 @@ export async function createTopic(userId, topicTitle) {
 	}
 }
 
-export async function getTopic(userId) {
+/**
+ * Get topic data.
+ * @param topicId - Topic ID of topic to retrieve.
+ * @returns {object} - Topic data.
+ */
+export async function getTopic(topicId) {
+	try {
+		const docRef = doc(db, 'topics', topicId)
+		const docSnap = await getDoc(docRef)
 
+		if (docSnap.exists()) {
+			console.log(docSnap.data())
+			return {
+				status: 200,
+				data: {
+					id: doc.id,
+					...docSnap.data()
+				}
+			}
+		} else {
+			return {
+				status: 422,
+				message: "Data not found."
+			}
+		}
+	} catch(error) {
+		return {
+			status: 500,
+			message: "Something went wrong."
+		}
+	}
 }
 
 /**
