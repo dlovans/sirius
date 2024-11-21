@@ -1,9 +1,10 @@
 import { redirect } from '@sveltejs/kit';
-import * as path from 'node:path';
+import { signOutUser} from '$lib/db/user.js';
 
 export async function load({ cookies }) {
 	cookies.delete('userID', { path: '/'})
 	cookies.delete('isAdmin', { path: '/' })
+	await signOutUser()
 
 	redirect(303, '/')
 }
