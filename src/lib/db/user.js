@@ -87,3 +87,24 @@ export async function createUser(email, password) {
 		}
 	}
 }
+
+/**
+ * Finds user by email.
+ * @param email - Email of user.
+ * @returns {object} - Status and user existence.
+ */
+export async function findUserByEmail(email) {
+	try {
+		const q = query(collection(db, 'users'), where('email', '==', email))
+		const querySnapshot = await getDocs(q)
+		return {
+			status: 200,
+			userExists: !querySnapshot.empty
+		}
+	} catch(error) {
+		return {
+			status: 500,
+			message: "Something went wrong!"
+		}
+	}
+}
