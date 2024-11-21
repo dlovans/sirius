@@ -21,7 +21,7 @@ export async function createTopic(userId, topicTitle) {
 		}
 
 		const topicRef = await addDoc(collection(db, 'topics'), {
-			topicOwner: doc(db, 'users', userId),
+			topicOwner: userId,
 			topicTitle: topicTitle,
 			verses: [],
 			content: "",
@@ -49,15 +49,16 @@ export async function getTopic(topicId) {
 	try {
 		const docRef = doc(db, 'topics', topicId)
 		const docSnap = await getDoc(docRef)
+		const data = docSnap.data()
 
 		if (docSnap.exists()) {
-			console.log(docSnap.data())
+			const topic = {
+				...data,
+				lastUpdated: data.lastUpdated.toDate().toISOString()
+			}
 			return {
 				status: 200,
-				data: {
-					id: doc.id,
-					...docSnap.data()
-				}
+				data: topic
 			}
 		} else {
 			return {
@@ -93,13 +94,20 @@ export async function getUserTopics(userId) {
 		const topics = querySnapshot.docs.map((doc) =>  (
 			{
 				id: doc.id,
-				...doc.data()
+				...doc.data(),
+			}
+		))
+
+		const updatedTopics = topics.map(topic => (
+			{
+				...topic,
+				lastUpdated: topic.lastUpdated.toDate().toISOString()
 			}
 		))
 
 		return {
 			status: 200,
-			data: topics
+			data: updatedTopics
 		}
 	} catch (error) {
 		return {
