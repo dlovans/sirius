@@ -1,5 +1,5 @@
 import { createUser, findUserByEmail } from '$lib/db/user.js';
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
 	signup: async ({ cookies, request }) => {
@@ -14,7 +14,7 @@ export const actions = {
 		}
 
 		if (userExists.userExists) {
-			return fail(409, { message: 'User already exists' })
+			return fail(409, { message: 'User already exists. Login instead.' })
 		}
 
 		const user = await createUser(email, password)
@@ -23,7 +23,8 @@ export const actions = {
 			throw error(500, 'Something went wrong!')
 		}
 
-		cookies.set('email', user.userID)
-		cookies.set('isAdmin', user.isAdmin)
+		cookies.set('userID', user.userID, { path: '/' })
+		cookies.set('isAdmin', user.isAdmin, { path: '/' })
+		redirect(303, '/')
 	}
 }
