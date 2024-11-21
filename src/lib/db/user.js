@@ -1,5 +1,5 @@
 import { db } from '$lib/db/firebase.js'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, getDoc, query, where, collection, getDocs, setDoc } from 'firebase/firestore';
 
 /**
@@ -106,5 +106,17 @@ export async function findUserByEmail(email) {
 			status: 500,
 			message: "Something went wrong!"
 		}
+	}
+}
+
+/**
+ * Signs out user authenticated with Firebase.
+ */
+export async function signOutUser() {
+	const auth = getAuth()
+	try {
+		await signOut(auth)
+	} catch(error) {
+		console.error(error)
 	}
 }
