@@ -1,6 +1,6 @@
 import { db } from '$lib/db/firebase.js'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, query, where, collection, getDocs, setDoc } from 'firebase/firestore';
 
 /**
  * Checks if user exists.
@@ -53,6 +53,37 @@ export async function signInUser(email, password){
 		return {
 			status: 422,
 			message: "Invalid email or password."
+		}
+	}
+}
+
+/**
+ * Creates a user in database.
+ * @param email - User email.
+ * @param password - User password.
+ * @returns {object} - Status and cookie data.
+ */
+export async function createUser(email, password) {
+	try {
+		const auth = getAuth()
+		const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+
+		await setDoc(doc(db, 'users', userCredentials.user.uid), {
+			email: email,
+			isAdmin: false
+		})
+
+		return {
+			status: 200,
+			userID: userCredentials.user.uid,
+			isAdmin: false
+		}
+
+	} catch(error) {
+		console.error(error)
+		return {
+			status: 500,
+			message: "Something went wrong!"
 		}
 	}
 }
