@@ -67,7 +67,6 @@
 
 			return
 		}
-
 		event.target.submit()
 	}
 </script>
@@ -75,7 +74,7 @@
 <a href="/" class="font-bold text-xl text-emerald-400 absolute top-4 left-2 z-50">SIRIUS</a>
 <div class="relative -translate-y-14 flex flex-col justify-center items-center gap-2 h-[100svh] w-[100vw]">
 	<p bind:this={warningRef} class="relative -translate-x-[150%] h-10 flex items-center justify-center rounded-xl w-11/12 max-w-[400px] opacity-0 transition-all duration-300 bg-red-500 text-l py-2 px-3">Nothing</p>
-	<form action="/?signup" method="POST" onsubmit={submitForm} class="max-w-[400px] w-11/12 flex flex-col items-center gap-4 py-3 px-3 bg-neutral-900 rounded-xl">
+	<form action="?/signup" method="POST" onsubmit={submitForm} class="max-w-[400px] w-11/12 flex flex-col items-center gap-4 py-3 px-3 bg-neutral-900 rounded-xl">
 		<h2 class="text-3xl text-zinc-100">Sign Up</h2>
 		<div class="flex flex-col w-full">
 			<label for="email" class="text-zinc-100 text-2xl">Email</label>
