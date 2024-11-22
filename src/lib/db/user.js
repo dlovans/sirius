@@ -1,6 +1,6 @@
 import { db } from '$lib/db/firebase.js'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, query, setDoc, collection, where, getDocs, limit } from 'firebase/firestore';
 
 /**
  * Authenticates user.
@@ -47,9 +47,15 @@ export async function signInUser(email, password){
 export async function createUser(email, password) {
 	try {
 		const auth = getAuth()
-		const userAuthorization = await isAuthenticated()
+		const q = query(
+			collection(db, 'users'),
+			where('email', '==', email),
+			limit(1)
+		)
+		const querySnapshot = await getDocs(q)
 
-		if (userAuthorization.isAuthenticated) {
+
+		if (!querySnapshot.empty) {
 			return {
 				status: 409,
 				message: `User with email ${email} already exists.`
@@ -70,7 +76,7 @@ export async function createUser(email, password) {
 		}
 
 	} catch(error) {
-		console.error(error)
+		console.error(error.code, error.message)
 		return {
 			status: 500,
 			message: "Error creating user!"
@@ -86,8 +92,6 @@ export async function signOutUser() {
 	const auth = getAuth()
 	try {
 		await signOut(auth)
-		console.log("Signed out")
-		console.log(auth.currentUser)
 		return true
 	} catch(error) {
 		console.error(error)
