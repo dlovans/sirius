@@ -1,27 +1,26 @@
-import { findUser } from '$lib/db/user.js';
+import { getAuth } from 'firebase/auth';
 import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc } from 'firebase/firestore';
 import { db } from '$lib/db/firebase.js';
 
 
 /**
  * Creates a topic.
- * @param userId - ID of user creating topic.
  * @param topicTitle - Title of topic.
  * @returns {object} - Topic ID and status.
  */
-export async function createTopic(userId, topicTitle) {
+export async function createTopic(topicTitle) {
 	try {
-		const user = await findUser(userId)
-
-		if (user.status !== 200) {
+		const auth = getAuth()
+		const user = auth.currentUser
+		if (!user) {
 			return {
 				status: 401,
-				message: "Unauthorized user."
+				message: "Unauthorized user. Login to create a topic."
 			}
 		}
 
 		const topicRef = await addDoc(collection(db, 'topics'), {
-			topicOwner: userId,
+			topicOwner: user.uid,
 			topicTitle: topicTitle,
 			verses: [],
 			content: "",
@@ -47,15 +46,31 @@ export async function createTopic(userId, topicTitle) {
  */
 export async function getTopic(topicId) {
 	try {
+		const auth = getAuth()
+		const user = auth.currentUser
+		if (!user) {
+			return {
+				status: 401,
+				message: "Unauthorized user. Login to read topic."
+			}
+		}
 		const docRef = doc(db, 'topics', topicId)
 		const docSnap = await getDoc(docRef)
 		const data = docSnap.data()
 
 		if (docSnap.exists()) {
+			if (user.uid !== data.topicOwner) {
+				return {
+					status: 401,
+					message: "Unauthorized user. User is not authorized to read topic."
+				}
+			}
+
 			const topic = {
 				...data,
 				lastUpdated: data.lastUpdated.toDate().toISOString()
 			}
+
 			return {
 				status: 200,
 				data: topic
@@ -69,19 +84,28 @@ export async function getTopic(topicId) {
 	} catch(error) {
 		return {
 			status: 500,
-			message: "Something went wrong."
+			message: "Could not fetch user topic."
 		}
 	}
 }
 
 /**
  * Get all user-created topics.
- * @param userId - User ID stored in session.
  * @returns {object} - Topics data.
  */
-export async function getUserTopics(userId) {
+export async function getUserTopics() {
 	try {
-		const q = query(collection(db, 'topics'), where('topicOwner', '==', userId))
+		const auth = getAuth()
+		const user = auth.currentUser
+
+		if (!user) {
+			return {
+				status: 401,
+				message: "Unauthorized user. Login to read topics."
+			}
+		}
+
+		const q = query(collection(db, 'topics'), where('topicOwner', '==', user.uid))
 		const querySnapshot = await getDocs(q)
 
 		if (querySnapshot.empty) {

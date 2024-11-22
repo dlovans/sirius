@@ -7,24 +7,16 @@ export const actions = {
 		const email = data.get('email')
 		const password = data.get('password')
 
-		const userExists = await findUserByEmail(email)
+		const user = await createUser(email, password)
 
-		if (userExists.status !== 200) {
-			throw error(500, 'Something went wrong!')
-		}
-
-		if (userExists.userExists) {
+		if (user.status === 409) {
 			return fail(409, { message: 'User already exists. Login instead.' })
 		}
 
-		const user = await createUser(email, password)
-
 		if (user.status !== 200) {
-			throw error(500, 'Something went wrong!')
+			throw error(user.status, user.message)
 		}
 
-		cookies.set('userID', user.userID, { path: '/' })
-		cookies.set('isAdmin', user.isAdmin, { path: '/' })
 		redirect(303, '/')
 	}
 }

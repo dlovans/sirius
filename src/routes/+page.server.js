@@ -1,9 +1,9 @@
 import { redirect, fail, error } from '@sveltejs/kit';
 import { createTopic } from '$lib/db/topic.js'
-import { findUser } from '$lib/db/user.js'
+import { isAuthenticated } from '$lib/db/user.js'
 import { getVersesByLangCode } from '$lib/db/verse.js';
 
-export async function load({ request, cookies }) {
+export async function load({ cookies }) {
 	let langCode = cookies.get('langCode')
 	if (langCode === 'undefined' || langCode === undefined) {
 		langCode = 'en';
@@ -18,32 +18,24 @@ export async function load({ request, cookies }) {
 }
 
 export const actions = {
-	createTopic: async ({ cookies, request }) => {
-		const data = await request.formData();
-		const topicTitle = data.get('title');
-		const userID = cookies.get('userID');
+	createTopic: async ({ request }) => {
+		console.log("asdasd")
+		const data = await request.formData()
+		const topicTitle = data.get('title')
+
+		const userAuthorization = await isAuthenticated()
 
 		if (!topicTitle) {
 			return fail(400, {message: 'Topic title is required!'})
 		}
-		if (!userID) {
-			console.log(userID)
+		if (!userAuthorization.isAuthenticated) {
 			throw error(401, 'Unauthorized! Login or sign up to create a topic.')
 		}
 
-		const user = await findUser(userID);
-
-		if (user.status === 422) {
-			throw error(401, "Unauthorized! Login or sign up to create a topic.")
-		}
-		if (user.status !== 200) {
-			throw error(500, "Something went wrong!")
-		}
-
-		const result = await createTopic(userID, topicTitle)
+		const result = await createTopic(topicTitle)
 
 		if (result.status !== 200) {
-			throw error(500, result.message)
+			throw error(result.status, result.message)
 		}
 
 		redirect(303,`/${result.topicID}`)

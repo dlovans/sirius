@@ -4,7 +4,7 @@
 	let inputRef = $state();
 	let warningTextRef = $state();
 
-	let { displayModal, hideModal, userID } = $props();
+	let { displayModal, hideModal, isAuthorized } = $props();
 
 
 	function cancelCreateTopic() {
@@ -14,7 +14,7 @@
 
 	async function submitForm(event) {
 		event.preventDefault();
-		if (!userID) {
+		if (!isAuthorized) {
 			goto('/login')
 			return
 		}

@@ -9,8 +9,6 @@ export const actions = {
 		const response = await signInUser(data.get('email'), data.get('password'))
 
 		if (response.status === 200) {
-			cookies.set('userID', response.userID, { path: '/' })
-			cookies.set('isAdmin', response.isAdmin, { path: '/' })
 			redirect(303,'/')
 		} else if (response.status === 422) {
 			return fail(400, { message: response.message })

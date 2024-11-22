@@ -2,7 +2,7 @@
 	import TopicForm from '$lib/ui/TopicForm.svelte';
 	import { goto } from '$app/navigation';
 
-	let { userID, isAdmin, topics = [] } = $props();
+	let { isAuthorized, isAdmin, topics = [] } = $props();
 
 	let menuRef = $state();
 	let lineOneRef = $state();
@@ -28,7 +28,7 @@
 
 	function checkUserCredentials() {
 		displayModal = true
-		if (!userID) {
+		if (!isAuthorized) {
 			goto('/login?message=topic_signin_required')
 		} else {
 			displayModal = true;
@@ -38,12 +38,6 @@
 	function hideModal() {
 		displayModal = false;
 	}
-
-	function handleLogout() {
-		window.location.href = '/logout'
-	}
-
-
 </script>
 
 <div class="px-2 py-2 fixed flex items-center w-full z-50">
@@ -58,12 +52,12 @@
 <nav bind:this={menuRef} class="w-[250px] h-[40px] fixed top-0 right-0 translate-x-full xl:left-0 xl:translate-x-0 transition-all duration-300 z-20">
 	<div class="text-xl w-full h-[100svh] bg-stone-900 py-3 px-3 overflow-x-hidden no-scrollbar">
 		<div class="mt-14 flex flex-col justify-center items-center gap-2">
-			{#if !userID}
+			{#if !isAuthorized}
 			<a href="/login" class="w-full h-10 flex items-center justify-center border border-solid border-emerald-400 rounded-md hover:bg-emerald-400 duration-500">Log In</a>
 			<a href="/signup" class="w-full h-10 flex items-center justify-center rounded-md bg-blue-500 duration-500">Sign Up</a>
 			{/if}
-			{#if userID}
-				<button onclick={handleLogout} class="w-full h-10 flex items-center justify-center border border-solid border-red-400 rounded-md hover:bg-red-400 duration-500">Log Out</button>
+			{#if isAuthorized}
+				<a href="/logout" class="w-full h-10 flex items-center justify-center border border-solid border-red-400 rounded-md hover:bg-red-400 duration-500">Log Out</a>
 			{/if}
 			{#if isAdmin}
 				<a href="/admin" class="w-full h-10 flex items-center justify-center  bg-opacity-50 rounded-md border border-solid border-sky-900 hover:bg-sky-900">Administrative</a>
@@ -84,5 +78,5 @@
 	</div>
 </nav>
 {#if displayModal}
-	<TopicForm displayModal={displayModal} hideModal={hideModal} userID={userID} />
+	<TopicForm displayModal={displayModal} hideModal={hideModal} isAuthorized={isAuthorized} />
 {/if}

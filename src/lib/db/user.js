@@ -1,36 +1,6 @@
 import { db } from '$lib/db/firebase.js'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc, query, where, collection, getDocs, setDoc } from 'firebase/firestore';
-
-/**
- * Checks if user exists.
- * @param userId - User ID.
- * @returns {object} - If database querying was successful.
- */
-export async function findUser(userId) {
-	try {
-		const docRef = doc(db, 'users', userId)
-		const docSnap = await getDoc(docRef);
-		if (docSnap.exists()) {
-			return {
-				status: 200,
-				message: "User exists",
-				isAdmin: docSnap.data().isAdmin
-			}
-		} else {
-			return {
-				status: 422,
-				message: "User does not exist"
-			}
-		}
-	} catch (error) {
-		return {
-			status: 500,
-			message: "Something went wrong!"
-		}
-	}
-
-}
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 /**
  * Authenticates user.
@@ -39,15 +9,26 @@ export async function findUser(userId) {
  * @returns {object} - Status and data for cookies.
  */
 export async function signInUser(email, password){
-	const auth = getAuth();
 	try {
+		const auth = getAuth()
 		const userCredentials = await signInWithEmailAndPassword(auth, email, password)
-		const userDoc = await findUser(userCredentials.user.uid)
+		const userAuthorization = await isAuthenticated()
+
+		if (!userAuthorization.isAuthenticated) {
+			return {
+				status: 500,
+				message: "Could not log in user."
+			}
+		}
+
+		const docRef = doc(db, 'users', userCredentials.user.uid)
+		const docSnap = await getDoc(docRef)
+		const userData = docSnap.data()
 
 		return {
 			status: 200,
 			userID: userCredentials.user.uid,
-			isAdmin: userDoc.isAdmin
+			isAdmin: userData.isAdmin
 		}
 	} catch(error) {
 		return {
@@ -66,6 +47,15 @@ export async function signInUser(email, password){
 export async function createUser(email, password) {
 	try {
 		const auth = getAuth()
+		const userAuthorization = await isAuthenticated()
+
+		if (userAuthorization.isAuthenticated) {
+			return {
+				status: 409,
+				message: `User with email ${email} already exists.`
+			}
+		}
+
 		const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
 
 		await setDoc(doc(db, 'users', userCredentials.user.uid), {
@@ -83,31 +73,11 @@ export async function createUser(email, password) {
 		console.error(error)
 		return {
 			status: 500,
-			message: "Something went wrong!"
+			message: "Error creating user!"
 		}
 	}
 }
 
-/**
- * Finds user by email.
- * @param email - Email of user.
- * @returns {object} - Status and user existence.
- */
-export async function findUserByEmail(email) {
-	try {
-		const q = query(collection(db, 'users'), where('email', '==', email))
-		const querySnapshot = await getDocs(q)
-		return {
-			status: 200,
-			userExists: !querySnapshot.empty
-		}
-	} catch(error) {
-		return {
-			status: 500,
-			message: "Something went wrong!"
-		}
-	}
-}
 
 /**
  * Signs out user authenticated with Firebase.
@@ -116,7 +86,46 @@ export async function signOutUser() {
 	const auth = getAuth()
 	try {
 		await signOut(auth)
+		console.log("Signed out")
+		console.log(auth.currentUser)
+		return true
 	} catch(error) {
 		console.error(error)
+		return false
+	}
+}
+
+
+/**
+ * Checks if user is authenticated.
+ * @returns - Data if user is authenticated and admin authorization.
+ */
+export async function isAuthenticated() {
+	const auth = getAuth()
+	const user = auth.currentUser
+	if (!user) {
+		return {
+			status: 200,
+			isAuthenticated: false,
+			isAdmin: false
+		}
+	}
+
+	try {
+		const docRef = doc(db, 'users', user.uid)
+		const docSnap = await getDoc(docRef)
+		const userData = docSnap.data()
+
+		return {
+			status: 200,
+			isAuthenticated: true,
+			isAdmin: userData.isAdmin
+		}
+
+	} catch(error) {
+		return {
+			status: 500,
+			message: "Error while checking user authentication."
+		}
 	}
 }
