@@ -37,8 +37,8 @@
 			{/each}
 			{:else}
 			{#each data.topicVerses as verse}
-				{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}
-					<Verse verseData={verse} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
+				{#if `${verse.data.chapterNo}:${verse.data.verseNo}`.includes(searchQuery) || verse.data.content.toLowerCase().includes(searchQuery)}
+					<Verse verseData={verse.data} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
 				{/if}
 			{/each}
 		{/if}
