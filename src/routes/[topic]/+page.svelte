@@ -4,7 +4,6 @@ import NavbarSpacer from '$lib/ui/NavbarSpacer.svelte';
 import Navbar from '$lib/ui/Navbar.svelte';
 
 let { data } = $props()
-console.log(data)
 </script>
 
 <Navbar isAuthorized={data.isAuthorized} isAdmin={data.isAdmin} topics={data.topics} />
