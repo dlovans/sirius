@@ -2,7 +2,7 @@
 	import TopicForm from '$lib/ui/TopicForm.svelte';
 	import { goto } from '$app/navigation';
 
-	let { isAuthorized, isAdmin, topics = [] } = $props();
+	let { isAuthorized, topics = [] } = $props();
 
 	let menuRef = $state();
 	let lineOneRef = $state();
@@ -58,9 +58,6 @@
 			{/if}
 			{#if isAuthorized}
 				<a href="/logout" onclick={toggleMenu} onkeydown={toggleMenu} tabindex="0" role="button" class="w-full h-10 flex items-center justify-center border border-solid border-red-400 rounded-md hover:bg-red-400 duration-500">Log Out</a>
-			{/if}
-			{#if isAdmin}
-				<a href="/admin" onclick={toggleMenu} onkeydown={toggleMenu} tabindex="0" role="button" class="w-full h-10 flex items-center justify-center  bg-opacity-50 rounded-md border border-solid border-sky-900 hover:bg-sky-900">Administrative</a>
 			{/if}
 		</div>
 		<hr class="w-52 h-0.5 mx-auto my-4 border-0 rounded md:my-5 bg-gray-700">
