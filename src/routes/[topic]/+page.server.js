@@ -27,7 +27,7 @@ export async function load({ params, cookies }) {
 		topicID,
 		topicTitle: userTopic.data.topicTitle,
 		topicContent: userTopic.data.content,
-		// topicVerses: userTopic.data.verses,
+		topicVerses: userTopic.data.verses,
 		verses: verses,
 		langCode
 	}
