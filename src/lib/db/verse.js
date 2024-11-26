@@ -144,3 +144,32 @@ export async function addVerseToTopic(verseId, topicId) {
 		}
 	}
 }
+
+/**
+ * Get a verse document by ID.
+ * @param verseId - ID of the verse to retrieve.
+ * @returns - If successful.
+ */
+export async function getVerseById(verseId) {
+	try {
+		const docRef = doc(db, 'verses', verseId)
+		const docSnap = await getDoc(docRef)
+		if (!docSnap.exists()) {
+			return {
+				status: 404,
+				message: "Could not find specified verse."
+			}
+		}
+
+		return {
+			status: 200,
+			data: docSnap.data()
+		}
+	} catch (error) {
+		console.error(error.message)
+		return {
+			status: 500,
+			message: error.message
+		}
+	}
+}
