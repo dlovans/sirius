@@ -1,7 +1,5 @@
 <script>
-	let { verseData, isAdmin, isEditable = false, isAddable = false} = $props()
-
-	// TODO: Add isRemovable prop.
+	let { verseData, isAdmin, isEditable = false, isAddable = false, isRemovable = false} = $props()
 
 	let verseRef = $state()
 	let warningRef = $state()
@@ -19,7 +17,7 @@
 	function validateContent(event) {
 		clearTimeout(timeoutID)
 		event.preventDefault()
-		if (verseRef.textContent !== originalVerseContent) {
+		if (verseRef.value !== originalVerseContent) {
 			inputVerseRef.value = verseRef.textContent
 			event.target.submit()
 		} else {
@@ -37,7 +35,7 @@
 
 </script>
 
-<form onsubmit={validateContent} action={(isEditable && verseData.isMutable && isAdmin) ? "?/updateVerse" : ""} class="flex flex-col items-center relative w-full bg-stone-900 gap-2 rounded-lg overflow-hidden shadow-inner border border-solid border-zinc-50 border-opacity-30 p-3">
+<form onsubmit={validateContent} method="POST" action={(isEditable && verseData.isMutable && isAdmin) ? "?/updateVerse" : ""} class="flex flex-col items-center relative w-full bg-stone-900 gap-2 rounded-lg overflow-hidden shadow-inner border border-solid border-zinc-50 border-opacity-30 p-3">
 	<div class="flex w-full items-center gap-1">
 		<h5 class="text-md flex h-min py-0.5 px-1 rounded-lg items-center">{verseData.chapterNo}:{verseData.verseNo}</h5>
 		{#if isEditable && verseData.isMutable && isAdmin}
@@ -56,7 +54,8 @@
 		{/if}
 	</div>
 	{#if isAddable}
-		<button class="bg-emerald-400 p-2 w-full">+ Add Verse</button>
+		<button class="bg-emerald-400 p-1 w-full rounded-md"><span class="text-lg">+</span> Add Verse</button>
+		{:else if isRemovable}
+		<button class="bg-red-400 p-1 w-full rounded-md"><span class="text-lg">-</span> Remove Verse</button>
 	{/if}
-
 </form>
