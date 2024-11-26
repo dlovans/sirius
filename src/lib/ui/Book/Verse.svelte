@@ -32,10 +32,10 @@
 
 		}
 	}
-
 </script>
 
-<form onsubmit={validateContent} method="POST" action={(isEditable && verseData.isMutable && isAdmin) ? "?/updateVerse" : ""} class="flex flex-col items-center relative w-full bg-stone-900 gap-2 rounded-lg overflow-hidden shadow-inner border border-solid border-zinc-50 border-opacity-30 p-3">
+<div class="flex flex-col items-center relative w-full bg-stone-900 gap-2 rounded-lg overflow-hidden shadow-inner border border-solid border-zinc-50 border-opacity-30 p-3">
+<form onsubmit={validateContent} method="POST" action={(isEditable && verseData.isMutable && isAdmin) ? "?/updateVerse" : ""} class="w-full">
 	<div class="flex w-full items-center gap-1">
 		<h5 class="text-md flex h-min py-0.5 px-1 rounded-lg items-center">{verseData.chapterNo}:{verseData.verseNo}</h5>
 		{#if isEditable && verseData.isMutable && isAdmin}
@@ -53,9 +53,16 @@
 			<p class="text-lg flex items-center">{verseData.content}</p>
 		{/if}
 	</div>
-	{#if isAddable}
-		<button class="bg-emerald-400 p-1 w-full rounded-md"><span class="text-lg">+</span> Add Verse</button>
-		{:else if isRemovable}
-		<button class="bg-red-400 p-1 w-full rounded-md"><span class="text-lg">-</span> Remove Verse</button>
-	{/if}
 </form>
+{#if isAddable}
+	<form action="?/addVerse" method="POST" class="w-full">
+		<input type="hidden" name="verseId" value={verseData.verseId} />
+		<button class="bg-emerald-400 p-1 w-full rounded-md"><span class="text-lg">+</span> Add Verse</button>
+	</form>
+{:else if isRemovable}
+	<form action="?/removeVerse">
+		<input type="hidden" name="verseId" value={verseData.verseId} />
+		<button class="bg-red-400 p-1 w-full rounded-md"><span class="text-lg">-</span> Remove Verse</button>
+	</form>
+{/if}
+</div>
