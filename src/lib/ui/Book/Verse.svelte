@@ -17,7 +17,7 @@
 	function validateContent(event) {
 		clearTimeout(timeoutID)
 		event.preventDefault()
-		if (verseRef.value !== originalVerseContent) {
+		if (verseRef.textContent !== originalVerseContent) {
 			inputVerseRef.value = verseRef.textContent
 			event.target.submit()
 		} else {
@@ -41,7 +41,7 @@
 		{#if isEditable && verseData.isMutable && isAdmin}
 			<p bind:this={warningRef} class="absolute top-1/2 left-1/2 translate-x-[250%] -translate-y-1/2 opacity-0 bg-red-400 px-4 py-2 text-center rounded-md transition-all duration-500">No changes were made!</p>
 			<div class="flex gap-2 flex-col w-full">
-				<input type="hidden" name="verseId" value={verseData.verseId} />
+				<input type="hidden" name="verseId" value={verseData.id} />
 				<input type="hidden" name="verseContent" value="" bind:this={inputVerseRef}>
 				<p bind:this={verseRef} contenteditable class="text-lg flex items-center border border-solid border-zinc-400 border-opacity-70 w-full p-2 rounded-md outline-none">{verseData.content}</p>
 				<div class="flex gap-2">
