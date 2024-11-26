@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { createTopic, getTopic } from '$lib/db/topic.js';
-import { addVerseToTopic, getVersesByLangCode } from '$lib/db/verse.js';
+import { addVerseToTopic, getVerseById, getVersesByLangCode } from '$lib/db/verse.js';
 import { isAuthenticated } from '$lib/db/user.js';
 
 export async function load({ params, cookies }) {
@@ -23,11 +23,19 @@ export async function load({ params, cookies }) {
 		throw error(userTopic.status, userTopic.message)
 	}
 
+	const topicVerses = []
+
+	if (userTopic.data.verses.length > 0) {
+		for (const verseId of userTopic.data.verses) {
+			topicVerses.push(await getVerseById(verseId))
+		}
+	}
+
 	return {
 		topicID,
 		topicTitle: userTopic.data.topicTitle,
 		topicContent: userTopic.data.content,
-		topicVerses: userTopic.data.verses,
+		topicVerses: topicVerses,
 		verses: verses,
 		langCode
 	}
