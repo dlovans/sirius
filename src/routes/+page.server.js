@@ -1,7 +1,7 @@
 import { redirect, fail, error } from '@sveltejs/kit';
 import { createTopic } from '$lib/db/topic.js'
 import { isAuthenticated } from '$lib/db/user.js'
-import { getVersesByLangCode } from '$lib/db/verse.js';
+import { getVersesByLangCode, updateVerseById } from '$lib/db/verse.js';
 
 export async function load({ cookies }) {
 	let langCode = cookies.get('langCode')
@@ -19,7 +19,6 @@ export async function load({ cookies }) {
 
 export const actions = {
 	createTopic: async ({ request }) => {
-		console.log("asdasd")
 		const data = await request.formData()
 		const topicTitle = data.get('title')
 
@@ -44,5 +43,16 @@ export const actions = {
 		const data = await request.formData();
 		const langCode = data.get('langCode');
 		cookies.set('langCode', langCode, { path: '/'});
+	},
+	updateVerse: async({ request }) => {
+		const data = await request.formData()
+		const verseId = data.get('verseId')
+		const updatedContent = data.get('verseContent')
+
+		const response = await updateVerseById(verseId, updatedContent)
+
+		if (response.status !== 200) {
+			console.log(response.message)
+		}
 	}
 }
