@@ -7,7 +7,7 @@
 </script>
 
 <Navbar isAuthorized={data.isAuthorized} isAdmin={data.isAdmin} topics={data.topics} />
-<div class="relative h-full w-auto top-16 z-0 flex flex-row mx-5">
+<div class="relative h-full w-auto top-16 z-0 flex flex-row mx-5 overflow-auto">
 	<NavbarSpacer />
-	<Book verses={data} />
+	<Book data={data} isEditable />
 </div>
