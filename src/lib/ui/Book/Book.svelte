@@ -1,8 +1,6 @@
 <script>
 	import Verse from '$lib/ui/Book/Verse.svelte';
 
-	// TODO: If verse has been added, change state, so it cant be added again.
-
 	let { data, isEditable = false, isAddable = false, isRemovable = false } = $props()
 	let searchQuery = $state("")
 	let formRef = $state()
@@ -30,7 +28,7 @@
 	{/if}
 	<input type="search" placeholder="Search verses..." class="w-full h-12 rounded-lg p-4 text-xl text-zinc-900 outline-0" oninput={filterVerses} />
 
-	<div class="flex flex-col gap-3 pb-5">
+	<div class="flex flex-col gap-3 pb-5 w-full">
 		{#if !isRemovable}
 			{#each data.verses.data as verse}
 				{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}
