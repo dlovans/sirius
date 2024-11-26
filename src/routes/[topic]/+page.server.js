@@ -18,17 +18,16 @@ export async function load({ params, cookies }) {
 		throw error(401, 'Unauthorized.')
 	}
 	const userTopic = await getTopic(topicID)
-	console.log(userTopic)
 
 	if (userTopic.status !== 200) {
 		throw error(userTopic.status, userTopic.message)
 	}
 
 	return {
-		topicID: userTopic.id,
-		topicTitle: userTopic.topicTitle,
-		topicContent: userTopic.content,
-		// topicVerses: userTopic.verses,
+		topicID,
+		topicTitle: userTopic.data.topicTitle,
+		topicContent: userTopic.data.content,
+		// topicVerses: userTopic.data.verses,
 		verses: verses,
 		langCode
 	}
@@ -37,7 +36,6 @@ export async function load({ params, cookies }) {
 
 export const actions = {
 	createTopic: async ({ request }) => {
-		console.log("asdasd")
 		const data = await request.formData()
 		const topicTitle = data.get('title')
 
