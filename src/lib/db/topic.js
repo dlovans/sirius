@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase/auth';
-import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '$lib/db/firebase.js';
+import { isAuthenticated } from '$lib/db/user.js';
 
 
 /**
@@ -137,6 +138,65 @@ export async function getUserTopics() {
 		return {
 			status: 500,
 			message: "Something went wrong."
+		}
+	}
+}
+
+/**
+ * Updates a topic title or analysis content.
+ * @param topicId - ID of topic to be updated.
+ * @param content - The content.
+ * @param updateType 'topicTitle' | 'content' - Whether to update title or analysis content.
+ * @returns - Operation status.
+ */
+export async function updateTopic(topicId, content, updateType) {
+	try {
+		const isAuthorized = await isAuthenticated()
+		if (isAuthorized.status !== 200) {
+			return {
+				status: isAuthorized.status,
+				message: isAuthorized.message
+			}
+		}
+
+		const topic = await getTopic(topicId)
+		if (topic.status !== 200) {
+			return {
+				status: topic.status,
+				message: topic.message
+			}
+		}
+
+		if (topic.data.topicOwner !== isAuthorized.id) {
+			return {
+				status: 401,
+				message: "Unauthorized user. Topic does not belong to this account."
+			}
+		}
+
+		const topicRef = doc(db, 'topics', topicId)
+		if (updateType === 'topicTitle') {
+			if (!content.length) {
+				return {
+					status: 409,
+					message: "Topic title cannot be empty!"
+				}
+			}
+			await updateDoc(topicRef, { topicTitle: content })
+		} else if (updateType === 'analysis') {
+			await updateDoc(topicRef, { content: content })
+		}
+
+		return {
+			status: 200,
+			message: "Topic successfully updated."
+		}
+
+	} catch (error) {
+		console.error(error.message)
+		return {
+			status: 500,
+			message: "Failed to update topic."
 		}
 	}
 }
