@@ -31,12 +31,23 @@ export async function load({ params, cookies }) {
 		}
 	}
 
+	const verseExclusionList = []
+		for (const verse of verses.data) {
+			for (const topicVerse of topicVerses) {
+				if (topicVerse.data.id === verse.id) {
+					verseExclusionList.push(verse.id)
+				}
+			}
+		}
+
+
 	return {
 		topicID,
 		topicTitle: userTopic.data.topicTitle,
 		topicContent: userTopic.data.content,
 		topicVerses: topicVerses,
 		verses: verses,
+		verseExclusionList,
 		langCode
 	}
 
