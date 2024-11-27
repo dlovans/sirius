@@ -115,8 +115,8 @@ export async function addVerseToTopic(verseId, topicId) {
 			}
 		}
 
-		if (Array.isArray(topic.verses) && topic.verses.length !== 0) {
-			for (const verse of topic.verses) {
+		if (Array.isArray(topic.data.verses) && topic.data.verses.length !== 0) {
+			for (const verse of topic.data.verses) {
 				if (verseId === verse) {
 					return {
 						status: 409,
@@ -160,15 +160,14 @@ export async function removeVerseFromTopic(verseId, topicId) {
 			}
 		}
 
-		if (!Array.isArray(topic.verses) || topic.verses.length === 0) {
+		if (!Array.isArray(topic.data.verses) || topic.data.verses.length === 0) {
 			return {
 				status: 404,
 				message: "Topic has no verses."
 			}
 		}
 
-		for (const verse of topic.verses) {
-			if (topic.verses.includes(topicId)) {
+			if (topic.data.verses.includes(verseId)) {
 				const docRef = doc(db, 'topics', topicId)
 				await updateDoc(docRef, { verses: arrayRemove(verseId) })
 				return {
@@ -176,7 +175,6 @@ export async function removeVerseFromTopic(verseId, topicId) {
 					message: `Verse successfully removed from topic with ID: ${topicId}.`
 				}
 			}
-		}
 
 		return {
 			status: 404,
