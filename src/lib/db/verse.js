@@ -107,6 +107,14 @@ export async function updateVerseById(verseId, updatedContent) {
  */
 export async function addVerseToTopic(verseId, topicId) {
 	try {
+		const isAuthorized = await isAuthenticated()
+		if (isAuthorized.status !== 200) {
+			return {
+				status: isAuthorized.status,
+				message: isAuthorized.message
+			}
+		}
+
 		const topic = await getTopic(topicId)
 		if (topic.status !==200) {
 			return {
@@ -152,6 +160,14 @@ export async function addVerseToTopic(verseId, topicId) {
  */
 export async function removeVerseFromTopic(verseId, topicId) {
 	try {
+		const isAuthorized = await isAuthenticated()
+		if (isAuthorized.status !== 200) {
+			return {
+				status: isAuthorized.status,
+				message: isAuthorized.message
+			}
+		}
+
 		const topic = await getTopic(topicId)
 		if (topic.status !==200) {
 			return {
