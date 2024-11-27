@@ -1,5 +1,5 @@
 import { db } from '$lib/db/firebase.js'
-import { collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { isAuthenticated } from '$lib/db/user.js';
 import { getTopic } from '$lib/db/topic.js';
 
@@ -126,7 +126,6 @@ export async function addVerseToTopic(verseId, topicId) {
 			}
 		}
 
-
 		const docRef = doc(db, 'topics', topicId)
 		await updateDoc(docRef, { verses: arrayUnion(verseId) })
 
@@ -135,6 +134,54 @@ export async function addVerseToTopic(verseId, topicId) {
 			message: `Verse successfully added to topic with ID: ${topicId}.`
 		}
 
+
+	} catch (error) {
+		console.error(error.message)
+		return {
+			status: 500,
+			message: error.message
+		}
+	}
+}
+
+/**
+ * Removes a verse from topic verse collection.
+ * @param verseId - ID of verse to be removed.
+ * @param topicId - ID of topic where verse is.
+ * @returns - If successful.
+ */
+export async function removeVerseFromTopic(verseId, topicId) {
+	try {
+		const topic = await getTopic(topicId)
+		if (topic.status !==200) {
+			return {
+				status: topic.status,
+				message: topic.message
+			}
+		}
+
+		if (!Array.isArray(topic.verses) || topic.verses.length === 0) {
+			return {
+				status: 404,
+				message: "Topic has no verses."
+			}
+		}
+
+		for (const verse of topic.verses) {
+			if (topic.verses.includes(topicId)) {
+				const docRef = doc(db, 'topics', topicId)
+				await updateDoc(docRef, { verses: arrayRemove(verseId) })
+				return {
+					status: 200,
+					message: `Verse successfully removed from topic with ID: ${topicId}.`
+				}
+			}
+		}
+
+		return {
+			status: 404,
+			message: "Could not find verse from topic with ID."
+		}
 
 	} catch (error) {
 		console.error(error.message)
