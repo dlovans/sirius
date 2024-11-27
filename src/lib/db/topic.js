@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, serverTimestamp, getDocs, query, where, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '$lib/db/firebase.js';
 import { isAuthenticated } from '$lib/db/user.js';
 
@@ -197,6 +197,51 @@ export async function updateTopic(topicId, content, updateType) {
 		return {
 			status: 500,
 			message: "Failed to update topic."
+		}
+	}
+}
+
+/**
+ * Deletes a topic.
+ * @param topicId - ID of topic to be deleted.
+ * @returns - Operation status.
+ */
+export async function deleteTopic(topicId) {
+	try {
+		const isAuthorized = await isAuthenticated()
+		if (isAuthorized.status !== 200) {
+			return {
+				status: isAuthorized.status,
+				message: isAuthorized.message
+			}
+		}
+
+		const topic = await getTopic(topicId)
+		if (topic.status !== 200) {
+			return {
+				status: topic.status,
+				message: topic.message
+			}
+		}
+
+		if (topic.data.topicOwner !== isAuthorized.id) {
+			return {
+				status: 401,
+				message: "Unauthorized user. Topic does not belong to this account."
+			}
+		}
+
+		await deleteDoc(doc(db, 'topics', topicId))
+		return {
+			status: 200,
+			message: "Topic successfully deleted."
+		}
+
+	} catch (error) {
+		console.error(error.message)
+		return {
+			status: 500,
+			message: "Failed to delete topic."
 		}
 	}
 }
