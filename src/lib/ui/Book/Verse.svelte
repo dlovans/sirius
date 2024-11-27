@@ -57,12 +57,12 @@
 {#if isAddable}
 	<form action="?/addVerse" method="POST" class="w-full">
 		<input type="hidden" name="verseId" value={verseData.id} />
-		<button class="bg-emerald-400 p-1 w-full rounded-md"><span class="text-lg">+</span> Add Verse</button>
+		<button type="submit" class="bg-emerald-400 p-1 w-full rounded-md"><span class="text-lg">+</span> Add Verse</button>
 	</form>
 {:else if isRemovable}
-	<form action="?/removeVerse" class="w-full">
+	<form action="?/removeVerse" method="POST" class="w-full">
 		<input type="hidden" name="verseId" value={verseData.id} />
-		<button class="bg-red-400 p-1 w-full rounded-md"><span class="text-lg">-</span> Remove Verse</button>
+		<button type="submit" class="bg-red-400 p-1 w-full rounded-md"><span class="text-lg">-</span> Remove Verse</button>
 	</form>
 {/if}
 </div>
