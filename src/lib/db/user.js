@@ -1,5 +1,5 @@
 import { db } from '$lib/db/firebase.js'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, getDoc, query, setDoc, collection, where, getDocs, limit } from 'firebase/firestore';
 
 /**
@@ -130,6 +130,28 @@ export async function isAuthenticated() {
 		return {
 			status: 500,
 			message: "Error while checking user authentication."
+		}
+	}
+}
+
+/**
+ * Sends a password reset link to user's email.
+ * @param email - Email associated with user account.
+ * @returns - Status.
+ */
+export async function sendResetPasswordLink(email) {
+	try {
+		const auth = getAuth()
+		await sendPasswordResetEmail(auth, email)
+		return {
+			status: 200,
+			message: "Password reset link successfully sent."
+		}
+	} catch (error) {
+		console.error(error)
+		return {
+			status: 500,
+			message: "Error sending email link!"
 		}
 	}
 }
