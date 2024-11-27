@@ -123,7 +123,8 @@ export async function isAuthenticated() {
 		return {
 			status: 200,
 			isAuthenticated: true,
-			isAdmin: userData.isAdmin
+			isAdmin: userData.isAdmin,
+			id: user.uid
 		}
 
 	} catch(error) {
