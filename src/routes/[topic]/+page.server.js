@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { createTopic, getTopic } from '$lib/db/topic.js';
-import { addVerseToTopic, getVerseById, getVersesByLangCode } from '$lib/db/verse.js';
+import { addVerseToTopic, getVerseById, getVersesByLangCode, removeVerseFromTopic } from '$lib/db/verse.js';
 import { isAuthenticated } from '$lib/db/user.js';
 
 export async function load({ params, cookies }) {
@@ -84,6 +84,15 @@ export const actions = {
 		const data = await request.formData()
 		const verseId = data.get('verseId')
 		const response = await addVerseToTopic(verseId, params.topic)
+
+		if (response.status !== 200) {
+			console.log(response.message)
+		}
+	},
+	removeVerse: async ({ request, params }) => {
+		const data = await request.formData()
+		const verseId = data.get('verseId')
+		const response = await removeVerseFromTopic(verseId, params.topic)
 
 		if (response.status !== 200) {
 			console.log(response.message)
