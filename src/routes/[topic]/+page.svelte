@@ -26,7 +26,6 @@ function updateHiddenInput(event) {
 				<button type="submit" class="px-3 py-1 rounded-md bg-blue-500 w-24">Update</button>
 			</form>
 			<form action="?/deleteTopic" method="POST">
-				<input type="hidden" name="topicId" value={data.topicId} />
 				<button type="submit" class="px-3 py-1 rounded-md bg-red-400 w-24">Delete</button>
 			</form>
 		</div>
