@@ -1,5 +1,5 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { createTopic, getTopic } from '$lib/db/topic.js';
+import { createTopic, getTopic, updateTopic } from '$lib/db/topic.js';
 import { addVerseToTopic, getVerseById, getVersesByLangCode, removeVerseFromTopic } from '$lib/db/verse.js';
 import { isAuthenticated } from '$lib/db/user.js';
 
@@ -97,5 +97,19 @@ export const actions = {
 		if (response.status !== 200) {
 			console.log(response.message)
 		}
+	},
+	updateAnalysis: async ({ request, params }) => {
+		const data = await request.formData()
+		const analysisContent = data.get('analysis')
+		const topicId = params.topic
+
+		const response = await updateTopic(topicId, analysisContent, 'analysis')
+	},
+	updateTopicName: async ({ request, params }) => {
+		const data = await request.formData()
+		const topicTitle = data.get('topicTitle')
+		const topicId = params.topic
+
+		const response = await updateTopic(topicId, topicTitle, 'topicTitle')
 	}
 }
