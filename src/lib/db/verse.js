@@ -161,9 +161,14 @@ export async function getVerseById(verseId) {
 			}
 		}
 
+		const data = {
+			...docSnap.data(),
+			id: docSnap.id
+		}
+
 		return {
 			status: 200,
-			data: docSnap.data()
+			data
 		}
 	} catch (error) {
 		console.error(error.message)
