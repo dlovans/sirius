@@ -1,7 +1,9 @@
-<script>
+<script>import { page } from '$app/stores';
+
 	let emailInputRef = $state()
 	let warningRef = $state()
 	let emailValid = $state(false)
+	let message = $state($page.url.searchParams.get('success') || '')
 	let timeoutID
 
 	const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
@@ -36,6 +38,9 @@
 
 <a href="/" class="font-bold text-xl text-emerald-400 absolute top-4 left-2 z-50">SIRIUS</a>
 <div class="relative -translate-y-14 flex flex-col justify-center items-center gap-2 h-[100svh] w-[100vw]">
+	{#if message}
+		<p class="relative h-10 flex items-center justify-center rounded-xl w-11/12 max-w-[400px] transition-all duration-300 bg-emerald-400 text-l py-2 px-3">Check your inbox for reset link!</p>
+		{/if}
 	<p bind:this={warningRef} class="relative -translate-x-[150%] h-10 flex items-center justify-center rounded-xl w-11/12 max-w-[400px] opacity-0 transition-all duration-300 bg-red-500 text-l py-2 px-3">Nothing</p>
 	<form action="?/resetPassword" method="POST" onsubmit={submitForm} class="max-w-[400px] w-11/12 flex flex-col items-center gap-4 py-3 px-3 bg-neutral-900 rounded-xl">
 		<h2 class="text-3xl text-zinc-100">Reset Password</h2>
