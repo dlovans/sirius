@@ -23,7 +23,7 @@
 	}
 
 	function validatePassword() {
-		if (passwordInputRef.value) {
+		if (passwordInputRef.value && passwordInputRef.value.length >= 6) {
 			passwordInputRef.classList.remove('border-orange-500')
 			passwordInputRef.classList.add('border-emerald-400')
 			passwordValid = true
@@ -57,7 +57,7 @@
 		}
 
 		if (!passwordValid) {
-			warningRef.textContent = "Password field cannot be empty."
+			warningRef.textContent = "Password must be at least 6 characters."
 			warningRef.classList.remove('opacity-0')
 			warningRef.classList.remove('-translate-x-[150%]')
 			passwordInputRef.classList.add('border-orange-500')
