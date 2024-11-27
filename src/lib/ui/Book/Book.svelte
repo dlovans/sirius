@@ -29,17 +29,45 @@
 	<input type="search" placeholder="Search verses..." class="w-full h-12 rounded-lg p-4 text-xl text-zinc-900 outline-0" oninput={filterVerses} />
 
 	<div class="flex flex-col gap-3 pb-5 w-full">
-		{#if !isRemovable}
-			{#each data.verses.data as verse}
-				{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}
-					<Verse verseData={verse} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
-				{/if}
-			{/each}
-			{:else}
+		<!--{#if !isRemovable}-->
+		<!--	{#each data.verses.data as verse}-->
+		<!--		{#if !data.verseExclusionList.includes(verse.id)}-->
+		<!--			{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}-->
+		<!--				<Verse verseData={verse} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />-->
+		<!--			{/if}-->
+		<!--		{/if}-->
+		<!--	{/each}-->
+		<!--	{:else if isRemovable}-->
+		<!--	{#each data.topicVerses as verse}-->
+		<!--		{#if `${verse.data.chapterNo}:${verse.data.verseNo}`.includes(searchQuery) || verse.data.content.toLowerCase().includes(searchQuery)}-->
+		<!--			<Verse verseData={verse.data} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />-->
+		<!--		{/if}-->
+		<!--	{/each}-->
+		<!--{/if}-->
+
+		{#if isRemovable}
 			{#each data.topicVerses as verse}
 				{#if `${verse.data.chapterNo}:${verse.data.verseNo}`.includes(searchQuery) || verse.data.content.toLowerCase().includes(searchQuery)}
 					<Verse verseData={verse.data} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
-				{/if}
+					{/if}
+				{/each}
+			{/if}
+
+		{#if !isRemovable && isAddable}
+			{#each data.verses.data as verse}
+				{#if !data.verseExclusionList.includes(verse.id)}
+					{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}
+						<Verse verseData={verse} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
+					{/if}
+					{/if}
+				{/each}
+			{/if}
+
+		{#if !isRemovable && !isAddable}
+			{#each data.verses.data as verse}
+					{#if `${verse.chapterNo}:${verse.verseNo}`.includes(searchQuery) || verse.content.toLowerCase().includes(searchQuery)}
+						<Verse verseData={verse} isEditable={isEditable} isAddable={isAddable} isRemovable={isRemovable} isAdmin={data.isAdmin} />
+					{/if}
 			{/each}
 		{/if}
 	</div>
