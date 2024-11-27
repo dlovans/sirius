@@ -1,5 +1,5 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { createTopic, getTopic, updateTopic } from '$lib/db/topic.js';
+import { createTopic, deleteTopic, getTopic, updateTopic } from '$lib/db/topic.js';
 import { addVerseToTopic, getVerseById, getVersesByLangCode, removeVerseFromTopic } from '$lib/db/verse.js';
 import { isAuthenticated } from '$lib/db/user.js';
 
@@ -109,7 +109,10 @@ export const actions = {
 		const data = await request.formData()
 		const topicTitle = data.get('topicTitle')
 		const topicId = params.topic
-
-		const response = await updateTopic(topicId, topicTitle, 'topicTitle')
+		await updateTopic(topicId, topicTitle, 'topicTitle')
+	},
+	deleteTopic: async ({ params }) => {
+		await deleteTopic(params.topic)
+		redirect(303,'/')
 	}
 }
