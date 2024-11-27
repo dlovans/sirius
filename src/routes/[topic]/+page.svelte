@@ -5,6 +5,11 @@ import Navbar from '$lib/ui/Navbar.svelte';
 import Analysis from '$lib/ui/Book/Analysis.svelte';
 
 let { data } = $props()
+let titleInputRef = $state()
+
+function updateHiddenInput(event) {
+	titleInputRef.value = event.target.value
+}
 </script>
 
 <Navbar isAuthorized={data.isAuthorized} isAdmin={data.isAdmin} topics={data.topics} />
@@ -14,14 +19,13 @@ let { data } = $props()
 		<div class="w-full text-xl py-2 px-4 bg-emerald-400 rounded-md flex flex-col lg:flex-row gap-1">
 			<div class="flex flex-nowrap gap-1 items-center lg:mr-auto w-full">
 				<h2 class="text-stone-900">Topic:</h2>
-				<textarea value={data.topicTitle} class="text-stone-900 w-full bg-transparent text-nowrap h-min resize-none" rows="1"></textarea>
+				<textarea onchange={updateHiddenInput} value={data.topicTitle} class="text-stone-900 w-full bg-transparent text-nowrap h-min resize-none" rows="1"></textarea>
 			</div>
-			<form action="?/updateTopicName">
-				<input type="hidden" name="topicTitle" value={data.topicTitle} />
-				<input type="hidden" name="topicId" value={data.topicId} />
+			<form action="?/updateTopicName" method="POST">
+				<input bind:this={titleInputRef} type="hidden" name="topicTitle" value={data.topicTitle} />
 				<button type="submit" class="px-3 py-1 rounded-md bg-blue-500 w-24">Update</button>
 			</form>
-			<form action="?/deleteTopic">
+			<form action="?/deleteTopic" method="POST">
 				<input type="hidden" name="topicId" value={data.topicId} />
 				<button type="submit" class="px-3 py-1 rounded-md bg-red-400 w-24">Delete</button>
 			</form>
@@ -37,7 +41,7 @@ let { data } = $props()
 			</div>
 			<div class="w-[98vw] xl:w-[100vw] flex-shrink-0 lg:flex-shrink snap-center flex flex-col gap-2">
 				<h3 class="text-center w-full bg-emerald-200 text-stone-900 rounded-md">Analysis</h3>
-				<Analysis analysisContent={data.analysis} />
+				<Analysis analysisContent={data.topicContent} />
 			</div>
 		</div>
 	</div>

@@ -40,7 +40,7 @@
 	}
 </script>
 
-<div class="px-2 py-2 fixed flex items-center w-full z-50 bg-[#212529] xl:bg-transparent">
+<div class="px-2 py-2 fixed flex items-center w-full z-50 bg-[#212529] xl:bg-transparent xl:w-min">
 	<a href="/" class="font-bold text-xl text-emerald-400 mr-auto">SIRIUS</a>
 	<div onclick={toggleMenu} onkeydown={toggleMenu} class="relative w-[40px] h-[40px] overflow-hidden hover:cursor-pointer xl:hidden" tabindex="0" role="button">
 		<span bind:this={lineOneRef} class="h-1 w-10 bg-emerald-400 absolute rounded-sm top-[5px] transition-all duration-300"></span>
