@@ -1,5 +1,5 @@
 import { db } from '$lib/db/firebase.js'
-import { collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
+import { collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, orderBy } from 'firebase/firestore'
 import { isAuthenticated } from '$lib/db/user.js';
 import { getTopic } from '$lib/db/topic.js';
 
@@ -9,7 +9,12 @@ import { getTopic } from '$lib/db/topic.js';
  * @returns {object} - Status code and data.
  */
 export async function getVersesByLangCode(languageCode) {
-	const q = query(collection(db, 'verses'), where('langCode', '==', languageCode))
+	const q = query(
+		collection(db, 'verses'),
+		where('langCode', '==', languageCode),
+		orderBy('chapterNo'),
+		orderBy('verseNo')
+	)
 
 	try {
 		const querySnapshot = await getDocs(q)
